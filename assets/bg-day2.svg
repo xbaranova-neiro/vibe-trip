@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <!-- Фон: тёмный киберпанк -->
+  <defs>
+    <linearGradient id="dark-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1e293b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#020617;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="neon-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="neon-magenta" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="neon-glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="strong-glow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(34, 211, 238, 0.06)" stroke-width="1"/>
+    </pattern>
+    
+    <clipPath id="content">
+      <rect x="0" y="0" width="1920" height="1080"/>
+    </clipPath>
+  </defs>
+  
+  <!-- Основной фон -->
+  <rect width="1920" height="1080" fill="url(#dark-bg)"/>
+  
+  <!-- Grid overlay -->
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+  
+  <!-- Диагональные линии сетки -->
+  <g stroke="url(#neon-cyan)" stroke-width="0.5" opacity="0.15">
+    <line x1="0" y1="0" x2="1920" y2="1080"/>
+    <line x1="200" y1="0" x2="0" y2="112"/>
+    <line x1="400" y1="0" x2="0" y2="224"/>
+    <line x1="600" y1="0" x2="0" y2="336"/>
+    <line x1="800" y1="0" x2="0" y2="448"/>
+    <line x1="1000" y1="0" x2="0" y2="560"/>
+    <line x1="1200" y1="0" x2="0" y2="672"/>
+    <line x1="1400" y1="0" x2="0" y2="784"/>
+    <line x1="1600" y1="0" x2="0" y2="896"/>
+    <line x1="1800" y1="0" x2="0" y2="1008"/>
+    <line x1="1920" y1="0" x2="720" y2="1080"/>
+    <line x1="1920" y1="200" x2="1808" y2="1080"/>
+    <line x1="1920" y1="400" x2="1696" y2="1080"/>
+    <line x1="1920" y1="600" x2="1584" y2="1080"/>
+    <line x1="1920" y1="800" x2="1472" y2="1080"/>
+    <line x1="1920" y1="1000" x2="1360" y2="1080"/>
+  </g>
+  
+  <!-- Вертикальные неоновые линии -->
+  <g stroke="url(#neon-cyan)" stroke-width="1" filter="url(#neon-glow)" opacity="0.25">
+    <line x1="300" y1="0" x2="300" y2="1080"/>
+    <line x1="650" y1="0" x2="650" y2="1080"/>
+    <line x1="1000" y1="0" x2="1000" y2="1080"/>
+    <line x1="1350" y1="0" x2="1350" y2="1080"/>
+    <line x1="1700" y1="0" x2="1700" y2="1080"/>
+  </g>
+  
+  <!-- Горизонтальные неоновые линии -->
+  <g stroke="url(#neon-magenta)" stroke-width="1" filter="url(#neon-glow)" opacity="0.2">
+    <line x1="0" y1="250" x2="1920" y2="250"/>
+    <line x1="0" y1="500" x2="1920" y2="500"/>
+    <line x1="0" y1="750" x2="1920" y2="750"/>
+  </g>
+  
+  <!-- Абстрактные chart-элементы -->
+  <g fill="none" stroke="url(#neon-cyan)" stroke-width="2" filter="url(#strong-glow)" opacity="0.35">
+    <path d="M200 800 L350 700 L500 750 L650 600 L800 650 L950 500 L1100 550 L1250 400 L1400 450 L1550 300"/>
+  </g>
+  
+  <g fill="none" stroke="url(#neon-magenta)" stroke-width="2" filter="url(#strong-glow)" opacity="0.25">
+    <path d="M200 850 L400 800 L600 820 L800 750 L1000 780 L1200 700 L1400 720 L1600 650 L1800 680"/>
+  </g>
+  
+  <!-- Светящиеся круги -->
+  <circle cx="1400" cy="200" r="120" fill="url(#neon-magenta)" opacity="0.15" filter="url(#strong-glow)"/>
+  <circle cx="1400" cy="200" r="80" fill="url(#neon-magenta)" opacity="0.2"/>
+  <circle cx="400" cy="800" r="100" fill="url(#neon-cyan)" opacity="0.12" filter="url(#strong-glow)"/>
+  <circle cx="400" cy="800" r="60" fill="url(#neon-cyan)" opacity="0.18"/>
+  
+  <!-- Ромб в центре -->
+  <g transform="translate(960, 540)">
+    <polygon points="0,-120 100,0 0,120 -100,0" fill="url(#neon-cyan)" opacity="0.08" filter="url(#strong-glow)"/>
+    <polygon points="0,-80 65,0 0,80 -65,0" fill="url(#neon-magenta)" opacity="0.12"/>
+  </g>
+  
+  <!-- Данные/точки -->
+  <g fill="#22d3ee" filter="url(#neon-glow)">
+    <circle cx="350" cy="700" r="3"/>
+    <circle cx="650" cy="600" r="3"/>
+    <circle cx="950" cy="500" r="3"/>
+    <circle cx="1250" cy="400" r="3"/>
+    <circle cx="1550" cy="300" r="3"/>
+  </g>
+  
+  <g fill="#a855f7" filter="url(#neon-glow)">
+    <circle cx="400" cy="800" r="3"/>
+    <circle cx="800" cy="750" r="3"/>
+    <circle cx="1200" cy="700" r="3"/>
+    <circle cx="1600" cy="650" r="3"/>
+  </g>
+  
+  <!-- Виньет -->
+  <radialGradient id="vignette" cx="50%" cy="50%" r="60%">
+    <stop offset="0%" style="stop-color:#000000;stop-opacity:0"/>
+    <stop offset="70%" style="stop-color:#000000;stop-opacity:0"/>
+    <stop offset="100%" style="stop-color:#000000;stop-opacity:0.4"/>
+  </radialGradient>
+  <rect width="1920" height="1080" fill="url(#vignette)"/>
+</svg>

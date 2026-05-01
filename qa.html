@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Вайб-трип — Панель управления (QA)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fafafa;
+      --text: #1e1b4b;
+      --accent: #7c4dff;
+      --radius: 16px;
+    }
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .qa-box {
+      max-width: 440px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    h1 { font-family: "Syne", sans-serif; font-size: 1.5rem; margin-bottom: 1.5rem; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 12px;
+      border: none;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-secondary { background: #f1f5f9; color: #475569; }
+    .hint { font-size: 0.85rem; color: #64748b; margin-top: 1.5rem; text-align: center; }
+    code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <div class="qa-box">
+    <h1>QA Панель управления</h1>
+    
+    <p>Используйте эти ссылки, чтобы обойти блокировку по дате и протестировать проект прямо сейчас.</p>
+
+    <a href="index.html?preview=1" class="btn">Начать тест (День 1)</a>
+    <a href="day2.html?preview=1" class="btn btn-secondary">Сразу День 2</a>
+    <a href="day3.html?preview=1" class="btn btn-secondary">Сразу День 3</a>
+
+    <button class="btn btn-secondary" onclick="localStorage.clear(); sessionStorage.clear(); alert('Память очищена!'); location.reload();">Сбросить весь прогресс</button>
+
+    <div class="hint">
+      Режим теста активирует параметр <code>?preview=1</code>.<br>
+      Он отключает проверку календаря и подставляет демо-данные.
+    </div>
+  </div>
+</body>
+</html>

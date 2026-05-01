@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <!-- Фон: яркая аркада -->
+  <defs>
+    <linearGradient id="arcade-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#fce7f3;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#e0f2fe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ede9fe;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="star-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#eab308;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="pink-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d946ef;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="cyan-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="soft-glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="drop-shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.2"/>
+    </filter>
+    
+    <clipPath id="content">
+      <rect x="0" y="0" width="1920" height="1080"/>
+    </clipPath>
+  </defs>
+  
+  <!-- Основной фон -->
+  <rect width="1920" height="1080" fill="url(#arcade-bg)"/>
+  
+  <!-- Паттерн из пиксельных квадратиков -->
+  <g opacity="0.08">
+    <rect x="100" y="80" width="24" height="24" rx="4" fill="#7c3aed"/>
+    <rect x="1200" y="140" width="28" height="28" rx="5" fill="#7c3aed"/>
+    <rect x="300" y="650" width="20" height="20" rx="3" fill="#7c3aed"/>
+    <rect x="1050" y="480" width="26" height="26" rx="4" fill="#7c3aed"/>
+    <rect x="700" y="780" width="22" height="22" rx="4" fill="#7c3aed"/>
+    <rect x="1500" y="520" width="24" height="24" rx="4" fill="#7c3aed"/>
+    <rect x="450" y="200" width="20" height="20" rx="3" fill="#7c3aed"/>
+    <rect x="1350" y="720" width="26" height="26" rx="5" fill="#7c3aed"/>
+  </g>
+  
+  <!-- Звёзды/конфетти -->
+  <g filter="url(#drop-shadow)">
+    <!-- Звезда 1 -->
+    <polygon points="200,150 225,215 290,215 242,250 258,315 200,278 142,315 158,250 110,215 175,215" fill="url(#star-gradient)"/>
+    
+    <!-- Звезда 2 -->
+    <polygon points="1550,200 1572,260 1638,260 1592,295 1608,358 1550,320 1492,358 1508,295 1462,260 1528,260" fill="url(#pink-gradient)"/>
+    
+    <!-- Звезда 3 -->
+    <polygon points="1200,600 1220,655 1280,655 1238,688 1252,745 1200,712 1148,745 1162,688 1120,655 1180,655" fill="url(#cyan-gradient)"/>
+    
+    <!-- Звезда 4 -->
+    <polygon points="400,500 418,550 472,550 434,580 448,632 400,602 352,632 366,580 328,550 382,550" fill="url(#star-gradient)"/>
+    
+    <!-- Звезда 5 -->
+    <polygon points="850,350 870,405 930,405 888,438 902,495 850,462 798,495 812,438 770,405 830,405" fill="url(#pink-gradient)"/>
+    
+    <!-- Звезда 6 -->
+    <polygon points="1350,750 1368,800 1422,800 1384,830 1398,882 1350,852 1302,882 1316,830 1278,800 1332,800" fill="url(#cyan-gradient)"/>
+  </g>
+  
+  <!-- Плавающие круги -->
+  <circle cx="400" cy="300" r="8" fill="#ec4899" opacity="0.45" filter="url(#soft-glow)"/>
+  <circle cx="1300" cy="180" r="10" fill="#06b6d4" opacity="0.4" filter="url(#soft-glow)"/>
+  <circle cx="1500" cy="650" r="7" fill="#eab308" opacity="0.5" filter="url(#soft-glow)"/>
+  <circle cx="200" cy="700" r="9" fill="#7c3aed" opacity="0.38" filter="url(#soft-glow)"/>
+  <circle cx="1700" cy="350" r="6" fill="#ec4899" opacity="0.5" filter="url(#soft-glow)"/>
+  <circle cx="600" cy="800" r="11" fill="#06b6d4" opacity="0.42" filter="url(#soft-glow)"/>
+  <circle cx="1000" cy="150" r="7" fill="#eab308" opacity="0.48" filter="url(#soft-glow)"/>
+  <circle cx="1100" cy="750" r="8" fill="#7c3aed" opacity="0.4" filter="url(#soft-glow)"/>
+  
+  <!-- Большие размытые пятна цвета -->
+  <ellipse cx="150" cy="200" rx="200" ry="150" fill="#fde047" opacity="0.25"/>
+  <ellipse cx="1700" cy="300" rx="180" ry="140" fill="#f472b6" opacity="0.22"/>
+  <ellipse cx="1800" cy="700" rx="220" ry="160" fill="#a78bfa" opacity="0.2"/>
+  <ellipse cx="100" cy="800" rx="190" ry="145" fill="#67e8f9" opacity="0.24"/>
+  <ellipse cx="960" cy="900" rx="280" ry="180" fill="#fde047" opacity="0.18"/>
+  
+  <!-- Игривые кривые -->
+  <path d="M0 200 Q240 150 480 200 T960 200 T1440 200 T1920 200" fill="none" stroke="#fde047" stroke-width="3" opacity="0.15"/>
+  <path d="M0 300 Q280 260 560 300 T1120 300 T1680 280" fill="none" stroke="#f472b6" stroke-width="2" opacity="0.12"/>
+  <path d="M0 800 Q300 770 600 800 T1200 800 T1800 780" fill="none" stroke="#a78bfa" stroke-width="3" opacity="0.18"/>
+  
+  <!-- Pixel art-стиль декорации (углы) -->
+  <g fill="#1e1b4b" opacity="0.15">
+    <!-- Левый верхний -->
+    <rect x="0" y="0" width="12" height="36"/>
+    <rect x="12" y="0" width="12" height="24"/>
+    <rect x="24" y="0" width="12" height="18"/>
+    <rect x="36" y="0" width="12" height="12"/>
+    
+    <!-- Правый верхний -->
+    <rect x="1908" y="0" width="12" height="36"/>
+    <rect x="1896" y="0" width="12" height="24"/>
+    <rect x="1884" y="0" width="12" height="18"/>
+    <rect x="1872" y="0" width="12" height="12"/>
+    
+    <!-- Левый нижний -->
+    <rect x="0" y="1044" width="12" height="36"/>
+    <rect x="12" y="1056" width="12" height="24"/>
+    <rect x="24" y="1062" width="12" height="18"/>
+    <rect x="36" y="1068" width="12" height="12"/>
+    
+    <!-- Правый нижний -->
+    <rect x="1908" y="1044" width="12" height="36"/>
+    <rect x="1896" y="1056" width="12" height="24"/>
+    <rect x="1884" y="1062" width="12" height="18"/>
+    <rect x="1872" y="1068" width="12" height="12"/>
+  </g>
+</svg>

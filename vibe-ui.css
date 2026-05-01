@@ -1,0 +1,1996 @@
+/**
+ * Vibe Trip — Clean Edition
+ * Простой, ровный дизайн без лишнего шума
+ */
+
+:root {
+  --vibe-font: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --vibe-display: "Syne", var(--vibe-font);
+  --vibe-border: rgba(15, 23, 42, 0.1);
+  --vibe-border-strong: rgba(15, 23, 42, 0.16);
+  --vibe-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --vibe-shadow-hover: 0 16px 32px rgba(0, 0, 0, 0.12);
+  --vibe-blur: blur(20px) saturate(180%);
+  --vibe-transition: 0.2s ease;
+  --accent: #ff6b9d;
+  --accent2: #7c4dff;
+}
+
+/* ---------- Базовые анимации ---------- */
+@keyframes vibe-ambient-float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(10px, -15px) rotate(1deg); }
+  66% { transform: translate(-15px, 10px) rotate(-1deg); }
+}
+
+@keyframes vibe-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes vibe-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes vibe-shimmer-bg {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ---------- Custom Scrollbar ---------- */
+body.vibe-trip::-webkit-scrollbar {
+  width: 8px;
+}
+body.vibe-trip::-webkit-scrollbar-track {
+  background: transparent;
+}
+body.vibe-trip::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+body.vibe-trip[data-vibe-day="1"]::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.3);
+}
+body.vibe-trip[data-vibe-day="2"]::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.3);
+}
+body.vibe-trip[data-vibe-day="3"]::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.3);
+}
+
+/* ---------- База ---------- */
+body.vibe-trip {
+  font-family: var(--vibe-font) !important;
+  color: #0f172a !important;
+  background: linear-gradient(165deg, #faf8ff 0%, #f0f4ff 50%, #ecfaf7 100%) !important;
+  background-attachment: fixed !important;
+  overflow-x: hidden;
+}
+
+body.vibe-trip::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(79, 70, 229, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.vibe-trip::after {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  z-index: -1;
+  background: inherit;
+  filter: blur(40px);
+  opacity: 0.4;
+  pointer-events: none;
+  animation: vibe-ambient-float 20s ease-in-out infinite;
+  display: block !important;
+}
+
+/* ═══════ ДЕНЬ 1 ═══════ */
+body.vibe-trip[data-vibe-day="1"] {
+  background-color: #fff8f0 !important;
+  background-image: url("assets/bg-day1.svg") !important;
+  background-size: cover;
+  background-position: center bottom;
+  background-attachment: fixed;
+}
+
+body.vibe-trip[data-vibe-day="1"] header h1 {
+  font-family: var(--vibe-display);
+  font-weight: 800;
+  background: linear-gradient(125deg, #fb923c 0%, #f43f5e 50%, #0ea5e9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+/* ═══════ ДЕНЬ 2 ═══════ */
+body.vibe-trip[data-vibe-day="2"] {
+  background-color: #0f172a !important;
+  background-image: url("assets/bg-day2.svg") !important;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #e2e8f0 !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] header h1 {
+  font-family: var(--vibe-display);
+  font-weight: 800;
+  background: linear-gradient(105deg, #22d3ee 0%, #a855f7 50%, #f472b6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] header p,
+body.vibe-trip[data-vibe-day="2"] .muted {
+  color: #94a3b8 !important;
+}
+
+/* ═══════════ ДЕНЬ 3 · Аркада / конфетти / энергия ═══════════ */
+body.vibe-trip[data-vibe-day="3"] {
+  background-color: #fdf4ff !important;
+  background-image: url("assets/bg-day3.svg") !important;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+body.vibe-trip[data-vibe-day="3"]::before {
+  background-image: radial-gradient(rgba(124, 58, 237, 0.08) 2px, transparent 2px);
+  background-size: 18px 18px;
+}
+
+body.vibe-trip[data-vibe-day="3"] header h1 {
+  font-family: var(--vibe-display);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  background: linear-gradient(115deg, #a855f7 0%, #db2777 35%, #0891b2 70%, #ca8a04 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  filter: drop-shadow(0 3px 0 rgba(255, 255, 255, 0.9)) drop-shadow(0 6px 16px rgba(168, 85, 247, 0.35));
+}
+
+body.vibe-trip[data-vibe-day="3"] .progress .dot.on {
+  background: linear-gradient(90deg, #eab308, #d946ef, #06b6d4) !important;
+  box-shadow: 0 4px 0 #1e1b4b, 0 8px 20px rgba(217, 70, 239, 0.45);
+}
+
+body.vibe-trip[data-vibe-day="3"] .game-wrap {
+  border-width: 4px !important;
+  border-color: #1e1b4b !important;
+  border-radius: 24px !important;
+  box-shadow:
+    0 0 0 3px #faf5ff,
+    0 12px 0 #1e1b4b,
+    0 20px 40px rgba(30, 27, 75, 0.35) !important;
+  overflow: hidden;
+}
+
+body.vibe-trip[data-vibe-day="3"] .game-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(30, 27, 75, 0.04) 2px,
+    rgba(30, 27, 75, 0.04) 4px
+  );
+  pointer-events: none;
+  animation: vibe-scan 3s linear infinite;
+}
+
+body.vibe-trip[data-vibe-day="3"] .paddle {
+  box-shadow: 0 6px 0 #4c1d95, 0 10px 24px rgba(124, 58, 237, 0.55) !important;
+  border-radius: 999px !important;
+}
+
+body.vibe-trip[data-vibe-day="3"] .falling.good {
+  border-width: 2px !important;
+  border-color: #1e1b4b !important;
+  box-shadow: 3px 4px 0 rgba(30, 27, 75, 0.85) !important;
+}
+
+body.vibe-trip[data-vibe-day="3"] .btn:not(.btn-secondary) {
+  background: linear-gradient(135deg, #e11d48, #a855f7, #0ea5e9) !important;
+  background-size: 260% 260% !important;
+  animation: vibe-shimmer-bg 4s ease infinite !important;
+  border: 3px solid #1e1b4b !important;
+  box-shadow: 0 6px 0 #1e1b4b, 0 12px 28px rgba(225, 29, 72, 0.35) !important;
+  color: #fff !important;
+}
+
+body.vibe-trip[data-vibe-day="3"] .btn-secondary {
+  border-width: 2px !important;
+  box-shadow: 0 4px 0 rgba(30, 27, 75, 0.35) !important;
+}
+
+/* ---------- Общие компоненты ---------- */
+body.vibe-trip .wrap,
+body.vibe-trip #appRoot {
+  position: relative;
+  z-index: 1;
+}
+
+body.vibe-trip .gate {
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.01) !important;
+  backdrop-filter: blur(12px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
+}
+
+body.vibe-trip .gate-inner {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .gate-inner {
+  background: rgba(15, 23, 42, 0.82) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.vibe-trip header h1 {
+  letter-spacing: -0.04em;
+  font-weight: 800;
+}
+
+body.vibe-trip:not([data-vibe-day]) header h1,
+body.vibe-trip[data-vibe-day=""] header h1 {
+  font-family: var(--vibe-display);
+  background: linear-gradient(120deg, #ea580c 0%, #ec4899 45%, #14b8a6 90%);
+  background-size: 200% 200%;
+  animation: vibe-text-gradient-shift 4s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+body.vibe-trip header h1 {
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  position: relative;
+}
+
+body.vibe-trip header h1::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent, #ff6b9d), var(--accent2, #7c4dff));
+  border-radius: 2px;
+}
+
+body.vibe-trip .step-title {
+  letter-spacing: -0.025em;
+}
+
+body.vibe-trip .card,
+body.vibe-trip .gate-inner,
+body.vibe-trip .price-box,
+body.vibe-trip .code-box,
+body.vibe-trip .card-opt,
+body.vibe-trip .caught-list,
+body.vibe-trip .mc-promo {
+  position: relative;
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: var(--radius, 18px) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.vibe-trip .card::before,
+body.vibe-trip .gate-inner::before,
+body.vibe-trip .price-box::before,
+body.vibe-trip .card-opt::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+  background: linear-gradient(180deg, var(--accent, #ff6b9d), var(--accent2, #7c4dff));
+  opacity: 0.85;
+}
+
+body.vibe-trip .card-opt::before {
+  opacity: 0.6;
+}
+
+body.vibe-trip[data-vibe-day="2"] .card,
+body.vibe-trip[data-vibe-day="2"] .gate-inner,
+body.vibe-trip[data-vibe-day="2"] .price-box,
+body.vibe-trip[data-vibe-day="2"] .code-box,
+body.vibe-trip[data-vibe-day="2"] .card-opt,
+body.vibe-trip[data-vibe-day="2"] .caught-list,
+body.vibe-trip[data-vibe-day="2"] .mc-promo {
+  background: rgba(15, 23, 42, 0.55) !important;
+  border-color: rgba(34, 211, 238, 0.22) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(168, 85, 247, 0.12) !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .card .name,
+body.vibe-trip[data-vibe-day="2"] .card .joke,
+body.vibe-trip[data-vibe-day="2"] .price-num,
+body.vibe-trip[data-vibe-day="2"] .gate-inner h2,
+body.vibe-trip[data-vibe-day="2"] .gate-inner p {
+  color: #e2e8f0 !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .card .joke,
+body.vibe-trip[data-vibe-day="2"] .gate-inner p {
+  color: #94a3b8 !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .result-big {
+  color: #f472b6 !important;
+}
+
+body.vibe-trip .card::before,
+body.vibe-trip .gate-inner::before,
+body.vibe-trip .price-box::before,
+body.vibe-trip .card-opt::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 4px 0 0 4px;
+  background: linear-gradient(180deg, var(--accent, #ff6b9d), var(--accent2, #7c4dff));
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+body.vibe-trip .card-opt::before {
+  opacity: 0.65;
+}
+
+@supports (backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px)) {
+  body.vibe-trip .card,
+  body.vibe-trip .gate-inner,
+  body.vibe-trip .price-box,
+  body.vibe-trip .code-box,
+  body.vibe-trip .card-opt,
+  body.vibe-trip .caught-list,
+  body.vibe-trip .mc-promo {
+    backdrop-filter: var(--vibe-blur);
+    -webkit-backdrop-filter: var(--vibe-blur);
+  }
+
+  body.vibe-trip:not([data-vibe-day="2"]) .card,
+  body.vibe-trip:not([data-vibe-day="2"]) .gate-inner,
+  body.vibe-trip:not([data-vibe-day="2"]) .price-box,
+  body.vibe-trip:not([data-vibe-day="2"]) .code-box,
+  body.vibe-trip:not([data-vibe-day="2"]) .card-opt,
+  body.vibe-trip:not([data-vibe-day="2"]) .caught-list,
+  body.vibe-trip:not([data-vibe-day="2"]) .mc-promo {
+    background: color-mix(in srgb, white 76%, transparent) !important;
+    background-image: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(245, 243, 255, 0.78),
+      rgba(236, 253, 245, 0.75)
+    ) !important;
+  }
+}
+
+body.vibe-trip .code-box::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: auto;
+  height: 4px;
+  bottom: auto;
+  border-radius: var(--radius, 18px) var(--radius, 18px) 0 0;
+  background: linear-gradient(90deg, var(--accent2, #7c4dff), var(--accent, #ff6b9d));
+  pointer-events: none;
+}
+
+body.vibe-trip .card.selected {
+  border-color: rgba(124, 77, 255, 0.45) !important;
+  box-shadow: var(--vibe-shadow-hover) !important;
+  background: linear-gradient(145deg, rgba(243, 232, 255, 0.95), rgba(255, 248, 252, 0.92)) !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .card.selected {
+  background: rgba(30, 41, 59, 0.85) !important;
+  border-color: rgba(34, 211, 238, 0.45) !important;
+}
+
+body.vibe-trip .card-opt.on {
+  border-color: rgba(233, 30, 99, 0.4) !important;
+  background: linear-gradient(145deg, rgba(252, 228, 236, 0.95), rgba(255, 255, 255, 0.9)) !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .card-opt.on {
+  background: rgba(67, 56, 202, 0.35) !important;
+  border-color: rgba(244, 114, 182, 0.45) !important;
+}
+
+body.vibe-trip .card:hover,
+body.vibe-trip .card:focus-visible {
+  transform: translateY(-8px) scale(1.02) !important;
+  border-color: rgba(124, 77, 255, 0.45) !important;
+  box-shadow:
+    0 20px 40px rgba(124, 77, 255, 0.15),
+    0 8px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  outline: none;
+}
+
+body.vibe-trip .card:active {
+  transform: translateY(-4px) scale(1.01) !important;
+}
+
+body.vibe-trip .code-box {
+  border-style: solid !important;
+  padding-top: calc(1rem + 10px) !important;
+  background: linear-gradient(135deg, rgba(237, 231, 246, 0.95), rgba(225, 243, 250, 0.9)) !important;
+  border: 2px dashed rgba(124, 77, 255, 0.3) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+body.vibe-trip .code-box::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: auto;
+  height: 4px;
+  bottom: auto;
+  border-radius: var(--radius, 18px) var(--radius, 18px) 0 0;
+  background: linear-gradient(90deg, var(--accent2, #7c4dff), var(--accent, #ff6b9d));
+  pointer-events: none;
+}
+
+body.vibe-trip .code-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  pointer-events: none;
+}
+
+body.vibe-trip .progress .dot {
+  height: 9px;
+  width: 9px;
+  background: rgba(15, 23, 42, 0.12) !important;
+  transition: width var(--vibe-transition), background var(--vibe-transition), border-radius var(--vibe-transition);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+body.vibe-trip .progress .dot.on {
+  width: 32px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent, #ff6b9d), var(--accent2, #7c4dff)) !important;
+  box-shadow:
+    0 2px 12px rgba(124, 77, 255, 0.45),
+    0 0 0 3px rgba(124, 77, 255, 0.15);
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+body.vibe-trip .btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(124, 77, 255, 0.3),
+    0 0 0 6px rgba(124, 77, 255, 0.15),
+    0 8px 24px rgba(124, 77, 255, 0.25);
+}
+
+body.vibe-trip .btn-primary {
+  position: relative;
+  transition: transform 0.15s ease, box-shadow var(--vibe-transition), filter 0.2s ease;
+  background-size: 200% 200% !important;
+  border: none !important;
+  overflow: hidden;
+}
+
+body.vibe-trip .btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+body.vibe-trip .btn-primary:hover {
+  transform: translateY(-3px) !important;
+  filter: brightness(1.08);
+  box-shadow:
+    0 16px 40px rgba(255, 107, 157, 0.45),
+    0 4px 12px rgba(124, 77, 255, 0.25) !important;
+}
+
+body.vibe-trip .btn-primary:active {
+  transform: translateY(-1px) !important;
+}
+
+body.vibe-trip:not([data-vibe-day="2"]):not([data-vibe-day="3"]) .btn-primary {
+  animation: vibe-shimmer-bg 6s ease infinite !important;
+}
+
+body.vibe-trip:not([data-vibe-day="3"]) .btn-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 36px rgba(255, 107, 157, 0.42);
+}
+
+body.vibe-trip input[type="text"],
+body.vibe-trip input[type="number"] {
+  border-width: 1.5px !important;
+  border-color: var(--vibe-border-strong) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  transition: border-color var(--vibe-transition), box-shadow var(--vibe-transition);
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+}
+
+body.vibe-trip input[type="text"]:focus,
+body.vibe-trip input[type="number"]:focus {
+  border-color: rgba(124, 77, 255, 0.45) !important;
+  box-shadow:
+    0 0 0 4px rgba(124, 77, 255, 0.15),
+    0 4px 12px rgba(124, 77, 255, 0.1);
+  outline: none;
+}
+
+body.vibe-trip .hud span {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 243, 255, 0.9)) !important;
+  border: 1px solid var(--vibe-border);
+  box-shadow: var(--vibe-shadow);
+}
+
+body.vibe-trip[data-vibe-day="3"] .hud span {
+  background: linear-gradient(135deg, #fff, #fdf4ff) !important;
+  border: 2px solid #1e1b4b !important;
+  box-shadow: 0 4px 0 rgba(30, 27, 75, 0.35) !important;
+}
+
+body.vibe-trip:not([data-vibe-day="3"]) .game-wrap {
+  position: relative;
+  border-width: 2px !important;
+  border-color: rgba(124, 77, 255, 0.2) !important;
+  box-shadow: inset 0 2px 24px rgba(255, 255, 255, 0.45), var(--vibe-shadow) !important;
+  background: linear-gradient(175deg, rgba(255, 255, 255, 0.55), rgba(224, 231, 255, 0.35), rgba(252, 231, 243, 0.25)) !important;
+}
+
+body.vibe-trip[data-vibe-day="3"] .game-wrap {
+  position: relative;
+}
+
+body.vibe-trip:not([data-vibe-day="3"]) .falling.good {
+  border-width: 1.5px !important;
+  border-color: rgba(124, 77, 255, 0.25) !important;
+}
+
+body.vibe-trip .wrap,
+body.vibe-trip #appRoot.wrap {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+
+/* ---------- Motion (сохранён stagger) ---------- */
+body.vibe-trip header {
+  animation: vibe-rise 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.vibe-trip .progress {
+  animation: vibe-fade 0.38s ease both;
+}
+
+body.vibe-trip .step-title {
+  animation: vibe-rise 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+}
+
+body.vibe-trip .grid .card {
+  animation: vibe-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.vibe-trip .grid .card:nth-child(1) {
+  animation-delay: 0.04s;
+}
+body.vibe-trip .grid .card:nth-child(2) {
+  animation-delay: 0.09s;
+}
+body.vibe-trip .grid .card:nth-child(3) {
+  animation-delay: 0.14s;
+}
+body.vibe-trip .grid .card:nth-child(4) {
+  animation-delay: 0.19s;
+}
+body.vibe-trip .grid .card:nth-child(5) {
+  animation-delay: 0.24s;
+}
+body.vibe-trip .grid .card:nth-child(6) {
+  animation-delay: 0.29s;
+}
+body.vibe-trip .grid .card:nth-child(7) {
+  animation-delay: 0.34s;
+}
+body.vibe-trip .grid .card:nth-child(8) {
+  animation-delay: 0.39s;
+}
+
+body.vibe-trip .card-opt {
+  animation: vibe-rise 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.vibe-trip .card-opt:nth-child(1) {
+  animation-delay: 0.03s;
+}
+body.vibe-trip .card-opt:nth-child(2) {
+  animation-delay: 0.07s;
+}
+body.vibe-trip .card-opt:nth-child(3) {
+  animation-delay: 0.11s;
+}
+body.vibe-trip .card-opt:nth-child(4) {
+  animation-delay: 0.15s;
+}
+body.vibe-trip .card-opt:nth-child(5) {
+  animation-delay: 0.19s;
+}
+
+body.vibe-trip .gate-inner {
+  animation: vibe-rise 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.vibe-trip .nav-row {
+  animation: vibe-fade 0.42s ease 0.12s both;
+}
+
+body.vibe-trip #resultScreen:not(.hidden) .price-box {
+  animation: vibe-rise 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.vibe-trip #resultScreen:not(.hidden) .code-box {
+  animation: vibe-rise 0.52s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+body.vibe-trip #calcAnim:not(.hidden) .emoji {
+  animation: vibe-rise 0.65s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+
+body.vibe-trip #gameScreen:not(.hidden) .game-wrap {
+  animation: vibe-rise 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.vibe-trip #gameScreen:not(.hidden) .hud span {
+  animation: vibe-rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.vibe-trip #gameScreen:not(.hidden) .hud span:nth-child(2) {
+  animation-delay: 0.06s;
+}
+
+body.vibe-trip #endScreen:not(.hidden) .caught-list {
+  animation: vibe-rise 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.vibe-trip #endScreen:not(.hidden) .mc-promo {
+  animation: vibe-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.06s both;
+}
+
+body.vibe-trip #endScreen:not(.hidden) > .btn {
+  animation: vibe-rise 0.46s cubic-bezier(0.22, 1, 0.36, 1) 0.14s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.vibe-trip::after,
+  body.vibe-trip[data-vibe-day="1"]::before,
+  body.vibe-trip[data-vibe-day="2"]::before,
+  body.vibe-trip[data-vibe-day="3"] .game-wrap::after {
+    animation: none !important;
+  }
+
+  body.vibe-trip .btn-primary,
+  body.vibe-trip[data-vibe-day="2"] .btn-primary,
+  body.vibe-trip[data-vibe-day="3"] .btn:not(.btn-secondary) {
+    animation: none !important;
+  }
+
+  body.vibe-trip .progress .dot.on {
+    animation: none !important;
+  }
+
+  body.vibe-trip header h1,
+  body.vibe-trip header,
+  body.vibe-trip .progress,
+  body.vibe-trip .step-title,
+  body.vibe-trip .grid .card,
+  body.vibe-trip .card-opt,
+  body.vibe-trip .gate-inner,
+  body.vibe-trip .nav-row,
+  body.vibe-trip #resultScreen:not(.hidden) .price-box,
+  body.vibe-trip #resultScreen:not(.hidden) .code-box,
+  body.vibe-trip #calcAnim:not(.hidden) .emoji,
+  body.vibe-trip #gameScreen:not(.hidden) .game-wrap,
+  body.vibe-trip #gameScreen:not(.hidden) .hud span,
+  body.vibe-trip #endScreen:not(.hidden) .caught-list,
+  body.vibe-trip #endScreen:not(.hidden) .mc-promo,
+  body.vibe-trip #endScreen:not(.hidden) > .btn {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* --- Skeleton Loader --- */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   21st.dev community effects (CSS-only)
+   — Animated Gradient Border
+   — Glow Effect
+   — Shimmer Button
+   — Spring Hover
+   — Flip Button (копирование кода)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* --- Price box — аккуратная обводка + белый фон --- */
+body.vibe-trip .price-box {
+  background: #fff !important;
+  border: 2px solid rgba(124, 77, 255, 0.18) !important;
+  box-shadow:
+    0 8px 32px rgba(124, 77, 255, 0.08),
+    0 2px 8px rgba(15, 23, 42, 0.05) !important;
+  overflow: visible !important;
+}
+
+body.vibe-trip .price-box::before {
+  display: none !important;
+}
+
+body.vibe-trip[data-vibe-day="1"] .price-box {
+  border-color: rgba(249, 115, 22, 0.28) !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .price-box {
+  background: rgba(15, 23, 42, 0.75) !important;
+  border-color: rgba(34, 211, 238, 0.25) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.vibe-trip .price-box p {
+  color: var(--text, #1a237e) !important;
+}
+
+body.vibe-trip .price-box p[style*="muted"] {
+  opacity: 0.7;
+}
+
+body.vibe-trip[data-vibe-day="2"] .price-box p {
+  color: #cbd5e1 !important;
+}
+
+/* --- Glow Effect (CTA кнопка на дне 3, main buttons) --- */
+@keyframes vibe-glow-breathe {
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 12px rgba(236, 72, 153, 0.3));
+  }
+  50% {
+    filter: brightness(1.08) drop-shadow(0 0 28px rgba(168, 85, 247, 0.55));
+  }
+}
+
+/* --- Shimmer Button (все btn-primary — блик на всю ширину кнопки) --- */
+@keyframes vibe-shimmer-sweep {
+  0% {
+    background-position: 160% 0;
+  }
+  100% {
+    background-position: -160% 0;
+  }
+}
+
+body.vibe-trip .btn-primary::after,
+body.vibe-trip[data-vibe-day="3"] .btn:not(.btn-secondary)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(255, 255, 255, 0.22) 48%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0.22) 52%,
+    transparent 65%,
+    transparent 100%
+  );
+  background-size: 220% 100%;
+  background-position: 160% 0;
+  transform: skewX(-16deg);
+  transform-origin: center;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  animation: vibe-shimmer-sweep 3.2s ease-in-out infinite;
+}
+
+body.vibe-trip .btn-primary,
+body.vibe-trip[data-vibe-day="3"] .btn:not(.btn-secondary) {
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Ripple effect для кнопок --- */
+@keyframes ripple-expand {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+body.vibe-trip .btn {
+  position: relative;
+  overflow: hidden;
+}
+
+body.vibe-trip .btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: width 0.6s, height 0.6s, opacity 0.6s;
+}
+
+body.vibe-trip .btn:active::before {
+  width: 300px;
+  height: 300px;
+  opacity: 0;
+}
+
+body.vibe-trip #endScreen:not(.hidden) #ctaBtn {
+  isolation: isolate;
+  animation: vibe-glow-breathe 2.5s ease-in-out infinite, vibe-shimmer-bg 4s ease infinite !important;
+  position: relative;
+  animation-delay: 0s, 1s;
+  text-shadow: 0 1px 2px rgba(30, 27, 75, 0.35);
+}
+
+body.vibe-trip #endScreen:not(.hidden) #ctaBtn::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.35), rgba(168, 85, 247, 0.35), rgba(6, 182, 212, 0.35));
+  filter: blur(18px);
+  z-index: -1;
+  opacity: 0.75;
+  animation: vibe-glow-breathe 3s ease-in-out infinite;
+}
+
+body.vibe-trip #endScreen:not(.hidden) #ctaBtn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(255, 255, 255, 0.22) 48%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0.22) 52%,
+    transparent 65%,
+    transparent 100%
+  );
+  background-size: 220% 100%;
+  background-position: 160% 0;
+  transform: skewX(-16deg);
+  transform-origin: center;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  animation: vibe-shimmer-sweep 3.2s ease-in-out infinite;
+}
+
+/* --- Spring Hover (карточки шагов) --- */
+body.vibe-trip .card {
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color var(--vibe-transition),
+    box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+body.vibe-trip .card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(124, 77, 255, 0.08) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+body.vibe-trip .card:hover::after {
+  opacity: 1;
+}
+
+body.vibe-trip .card:hover {
+  transform: translateY(-6px) scale(1.025) !important;
+}
+
+body.vibe-trip .card:active {
+  transform: translateY(-2px) scale(0.985) !important;
+  transition-duration: 0.1s;
+}
+
+body.vibe-trip .card.selected::before {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent2, #0ea5e9), var(--accent, #f97316));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: card-select-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.vibe-trip .card.selected::after {
+  content: "✓";
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  color: white;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1;
+  z-index: 2;
+}
+
+@keyframes card-select-pop {
+  0% {
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+body.vibe-trip .card-opt {
+  transition:
+    transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color var(--vibe-transition),
+    background var(--vibe-transition) !important;
+}
+
+body.vibe-trip .card-opt:hover {
+  transform: translateX(4px) scale(1.01);
+}
+
+/* --- Flip Button (кнопка копирования кода) --- */
+body.vibe-trip #copyBtn {
+  perspective: 400px;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.vibe-trip #copyBtn:active {
+  transform: rotateX(12deg) scale(0.96);
+}
+
+/* --- Animated gradient text на цене (день 1, 3) --- */
+@keyframes vibe-text-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* --- Custom Scrollbar --- */
+body.vibe-trip {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(124, 77, 255, 0.4) rgba(255, 255, 255, 0.2);
+}
+
+body.vibe-trip::-webkit-scrollbar {
+  width: 10px;
+}
+
+body.vibe-trip::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+body.vibe-trip::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(124, 77, 255, 0.5), rgba(255, 107, 157, 0.5));
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+body.vibe-trip::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(124, 77, 255, 0.7), rgba(255, 107, 157, 0.7));
+}
+
+body.vibe-trip .price-num {
+  color: var(--accent2, #7c4dff) !important;
+  font-family: var(--vibe-display);
+  letter-spacing: -0.03em;
+}
+
+body.vibe-trip[data-vibe-day="1"] .price-num {
+  color: #ea580c !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .price-num {
+  color: #22d3ee !important;
+}
+
+body.vibe-trip[data-vibe-day="3"] .price-num {
+  color: #a855f7 !important;
+}
+
+/* --- Glowing dot-grid (день 2) + пульс на ховер карточки --- */
+body.vibe-trip[data-vibe-day="2"] .card:hover {
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.4),
+    0 0 24px rgba(34, 211, 238, 0.2),
+    0 0 48px rgba(168, 85, 247, 0.15),
+    var(--vibe-shadow-hover) !important;
+}
+
+/* --- Result screen confetti shimmer (день 3 финал) --- */
+@keyframes vibe-confetti-flash {
+  0%, 100% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  75% {
+    background-position: 0% 50%;
+  }
+}
+
+body.vibe-trip[data-vibe-day="3"] #endScreen:not(.hidden) h2 {
+  font-family: var(--vibe-display);
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  letter-spacing: -0.04em;
+  background: linear-gradient(
+    135deg,
+    #eab308,
+    #ec4899,
+    #7c3aed,
+    #0ea5e9,
+    #eab308
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  animation: vibe-confetti-flash 6s ease infinite;
+  filter: drop-shadow(0 3px 0 rgba(30, 27, 75, 0.2));
+}
+
+/* --- Пульс «Не хватает» на HUD (день 3) --- */
+@keyframes vibe-deficit-pulse {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(255, 64, 129, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 18px rgba(255, 64, 129, 0.65), 0 0 32px rgba(168, 85, 247, 0.25);
+  }
+}
+
+body.vibe-trip[data-vibe-day="3"] .deficit {
+  animation: vibe-deficit-pulse 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.vibe-trip #endScreen:not(.hidden) #ctaBtn,
+  body.vibe-trip #endScreen:not(.hidden) #ctaBtn::before,
+  body.vibe-trip #endScreen:not(.hidden) #ctaBtn::after,
+  body.vibe-trip .btn-primary::after,
+  body.vibe-trip[data-vibe-day="3"] .btn:not(.btn-secondary)::after,
+  body.vibe-trip[data-vibe-day="3"] #endScreen:not(.hidden) h2,
+  body.vibe-trip[data-vibe-day="3"] .deficit {
+    animation: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Premium redesign layer
+   Цель: меньше визуального шума, больше дорогой продуктовой системы.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --premium-ink: #101828;
+  --premium-muted: #667085;
+  --premium-soft: rgba(255, 255, 255, 0.78);
+  --premium-surface: rgba(255, 255, 255, 0.92);
+  --premium-line: rgba(16, 24, 40, 0.1);
+  --premium-line-strong: rgba(16, 24, 40, 0.16);
+  --premium-shadow-sm: 0 8px 22px rgba(16, 24, 40, 0.08);
+  --premium-shadow: 0 20px 55px rgba(16, 24, 40, 0.12);
+  --premium-shadow-lg: 0 28px 80px rgba(16, 24, 40, 0.18);
+  --premium-radius: 18px;
+}
+
+body.vibe-trip {
+  --text: var(--premium-ink);
+  --muted: var(--premium-muted);
+  font-family: var(--vibe-font) !important;
+  color: var(--premium-ink) !important;
+  background:
+    radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.92), transparent 28rem),
+    radial-gradient(circle at 92% 10%, rgba(255, 255, 255, 0.5), transparent 24rem),
+    linear-gradient(145deg, #f8fafc 0%, #eef4ff 42%, #f7fbf8 100%) !important;
+}
+
+body.vibe-trip[data-vibe-day="1"] {
+  --accent: #f97316;
+  --accent2: #0ea5e9;
+  background:
+    radial-gradient(circle at 16%  8%, rgba(254, 215, 170, 0.92), transparent 26rem),
+    radial-gradient(circle at 86% 14%, rgba(254, 202, 202, 0.40), transparent 24rem),
+    radial-gradient(circle at 52% 96%, rgba(186, 230, 253, 0.58), transparent 28rem),
+    linear-gradient(150deg, #fffbf5 0%, #fff4ea 38%, #f0f9ff 100%) !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] {
+  --accent: #39d3e6;
+  --accent2: #b887ff;
+  --premium-ink: #f8fafc;
+  --premium-muted: #aab7c9;
+  color: #f8fafc !important;
+  background:
+    radial-gradient(circle at 10% 8%, rgba(57, 211, 230, 0.28), transparent 24rem),
+    radial-gradient(circle at 88% 14%, rgba(184, 135, 255, 0.28), transparent 24rem),
+    radial-gradient(circle at 52% 100%, rgba(30, 64, 175, 0.24), transparent 30rem),
+    linear-gradient(160deg, #090d18 0%, #111827 48%, #0c1220 100%) !important;
+}
+
+body.vibe-trip[data-vibe-day="3"] {
+  --accent: #ec2f73;
+  --accent2: #1ea7d7;
+  background:
+    radial-gradient(circle at 14% 14%, rgba(255, 214, 102, 0.54), transparent 22rem),
+    radial-gradient(circle at 90% 16%, rgba(236, 47, 115, 0.3), transparent 23rem),
+    radial-gradient(circle at 50% 96%, rgba(30, 167, 215, 0.34), transparent 28rem),
+    linear-gradient(150deg, #fffdf4 0%, #fff4f8 44%, #eefaff 100%) !important;
+}
+
+body.vibe-trip::before {
+  background-image:
+    linear-gradient(rgba(16, 24, 40, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 24, 40, 0.035) 1px, transparent 1px) !important;
+  background-size: 34px 34px !important;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 78%);
+}
+
+body.vibe-trip[data-vibe-day="2"]::before {
+  background-image:
+    linear-gradient(rgba(57, 211, 230, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57, 211, 230, 0.07) 1px, transparent 1px) !important;
+}
+
+body.vibe-trip::after {
+  display: none !important;
+}
+
+body.vibe-trip .wrap,
+body.vibe-trip #appRoot.wrap {
+  width: min(100%, 560px);
+  max-width: 560px;
+  padding-top: max(1.1rem, env(safe-area-inset-top));
+  padding-bottom: max(2.75rem, calc(env(safe-area-inset-bottom) + 1.25rem));
+}
+
+body.vibe-trip header {
+  position: relative;
+  text-align: left;
+  padding: 0.35rem 0 1.1rem;
+}
+
+body.vibe-trip header::before {
+  content: "VIBE TRIP";
+  display: inline-flex;
+  margin-bottom: 0.7rem;
+  padding: 0.34rem 0.58rem;
+  border: 1px solid color-mix(in srgb, var(--accent, #da5a2a) 32%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent, #da5a2a) 10%, white 76%);
+  color: color-mix(in srgb, var(--accent, #da5a2a) 72%, #101828);
+  font-size: 0.66rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.12em;
+}
+
+body.vibe-trip[data-vibe-day="2"] header::before {
+  background: rgba(57, 211, 230, 0.1);
+  color: #67e8f9;
+}
+
+body.vibe-trip header h1 {
+  max-width: 12ch;
+  margin-bottom: 0.5rem !important;
+  color: var(--premium-ink) !important;
+  font-family: var(--vibe-display);
+  font-size: clamp(2rem, 7.8vw, 3.55rem) !important;
+  line-height: 0.96 !important;
+  letter-spacing: -0.03em !important;
+  background: none !important;
+  filter: none !important;
+}
+
+body.vibe-trip header p {
+  max-width: 34rem;
+  color: var(--premium-muted) !important;
+  font-size: 0.96rem !important;
+  line-height: 1.45;
+}
+
+body.vibe-trip .progress {
+  justify-content: flex-start;
+  gap: 7px;
+  margin: 0 0 1.15rem;
+}
+
+body.vibe-trip .progress .dot {
+  width: 100%;
+  max-width: 46px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(16, 24, 40, 0.12) !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .progress .dot {
+  background: rgba(255, 255, 255, 0.16) !important;
+}
+
+body.vibe-trip .progress .dot.on {
+  width: 100%;
+  max-width: 62px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2)) !important;
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--accent) 28%, transparent) !important;
+}
+
+body.vibe-trip .step-title {
+  margin: 0 0 0.85rem;
+  color: var(--premium-ink) !important;
+  font-size: 1rem !important;
+  line-height: 1.25;
+  text-align: left;
+}
+
+body.vibe-trip .grid {
+  gap: 12px;
+}
+
+body.vibe-trip .card,
+body.vibe-trip .gate-inner,
+body.vibe-trip .price-box,
+body.vibe-trip .code-box,
+body.vibe-trip .card-opt,
+body.vibe-trip .caught-list,
+body.vibe-trip .mc-promo,
+body.vibe-trip .panel {
+  overflow: hidden;
+  background: var(--premium-surface) !important;
+  border: 1px solid var(--premium-line) !important;
+  border-radius: var(--premium-radius) !important;
+  box-shadow: var(--premium-shadow-sm) !important;
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
+}
+
+body.vibe-trip[data-vibe-day="2"] .card,
+body.vibe-trip[data-vibe-day="2"] .gate-inner,
+body.vibe-trip[data-vibe-day="2"] .price-box,
+body.vibe-trip[data-vibe-day="2"] .code-box,
+body.vibe-trip[data-vibe-day="2"] .card-opt,
+body.vibe-trip[data-vibe-day="2"] .caught-list,
+body.vibe-trip[data-vibe-day="2"] .mc-promo {
+  background: rgba(17, 24, 39, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+body.vibe-trip .card::before,
+body.vibe-trip .gate-inner::before,
+body.vibe-trip .price-box::before,
+body.vibe-trip .card-opt::before,
+body.vibe-trip .panel::before {
+  display: none !important;
+}
+
+body.vibe-trip .card {
+  min-height: 86px;
+  padding: 16px 17px !important;
+  text-align: left;
+  transform: translateZ(0);
+}
+
+body.vibe-trip .card .name,
+body.vibe-trip .card-opt .txt {
+  color: var(--premium-ink) !important;
+  font-size: 0.98rem !important;
+  line-height: 1.22;
+  letter-spacing: 0;
+}
+
+body.vibe-trip .card .joke {
+  margin-top: 0.45rem !important;
+  color: var(--premium-muted) !important;
+  font-size: 0.83rem !important;
+  line-height: 1.35;
+}
+
+body.vibe-trip[data-vibe-day="2"] .card .name,
+body.vibe-trip[data-vibe-day="2"] .card-opt .txt {
+  color: #f8fafc !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .card .joke {
+  color: #aab7c9 !important;
+}
+
+body.vibe-trip .card:hover,
+body.vibe-trip .card:focus-visible {
+  transform: translateY(-3px) !important;
+  border-color: color-mix(in srgb, var(--accent) 34%, transparent) !important;
+  box-shadow: var(--premium-shadow) !important;
+}
+
+body.vibe-trip .card.selected,
+body.vibe-trip .card-opt.on {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, white), rgba(255, 255, 255, 0.94)) !important;
+  border-color: color-mix(in srgb, var(--accent) 38%, transparent) !important;
+  box-shadow: var(--premium-shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.7) !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .card.selected,
+body.vibe-trip[data-vibe-day="2"] .card-opt.on {
+  background: linear-gradient(135deg, rgba(57, 211, 230, 0.14), rgba(184, 135, 255, 0.12)) !important;
+  border-color: rgba(103, 232, 249, 0.38) !important;
+}
+
+body.vibe-trip .card.selected::after,
+body.vibe-trip .card-opt.on::after {
+  content: "";
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 50%, #fff 0 2px, transparent 3px),
+    linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 26%, transparent);
+}
+
+body.vibe-trip .card-opt {
+  align-items: center;
+  min-height: 58px;
+  padding: 13px 15px !important;
+  margin-bottom: 10px !important;
+}
+
+body.vibe-trip .card-opt:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--premium-shadow) !important;
+}
+
+body.vibe-trip .card-opt input {
+  width: 18px;
+  height: 18px;
+  margin-top: 0 !important;
+  accent-color: var(--accent);
+}
+
+body.vibe-trip input[type="text"],
+body.vibe-trip input[type="number"] {
+  min-height: 52px;
+  border: 1px solid var(--premium-line-strong) !important;
+  border-radius: 15px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: #101828 !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+}
+
+body.vibe-trip[data-vibe-day="2"] input[type="text"],
+body.vibe-trip[data-vibe-day="2"] input[type="number"] {
+  background: rgba(2, 6, 23, 0.52) !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+body.vibe-trip input[type="range"] {
+  height: 9px;
+  accent-color: var(--accent);
+}
+
+body.vibe-trip .range-labels,
+body.vibe-trip .muted,
+body.vibe-trip .hint,
+body.vibe-trip .hint-move,
+body.vibe-trip .income-value,
+body.vibe-trip .income-hint {
+  color: var(--premium-muted) !important;
+}
+
+body.vibe-trip .income-hint,
+body.vibe-trip #incomeHint {
+  color: var(--premium-ink) !important;
+  font-size: 1.05rem !important;
+}
+
+body.vibe-trip .nav-row {
+  gap: 12px;
+  margin-top: 1.35rem;
+}
+
+body.vibe-trip .btn,
+body.vibe-trip .btn-primary,
+body.vibe-trip .btn-ghost,
+body.vibe-trip .btn-secondary {
+  min-height: 50px;
+  border-radius: 999px !important;
+  padding: 13px 20px !important;
+  font-size: 0.94rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-decoration: none;
+}
+
+body.vibe-trip .btn-primary,
+body.vibe-trip .btn:not(.btn-secondary):not(.btn-ghost) {
+  border: 1px solid rgba(255, 255, 255, 0.34) !important;
+  background: linear-gradient(135deg, var(--accent), var(--accent2)) !important;
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--accent) 28%, transparent) !important;
+  color: #fff !important;
+}
+
+body.vibe-trip .btn-ghost,
+body.vibe-trip .btn-secondary {
+  background: rgba(255, 255, 255, 0.72) !important;
+  border: 1px solid var(--premium-line) !important;
+  color: var(--premium-ink) !important;
+  box-shadow: var(--premium-shadow-sm) !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .btn-ghost,
+body.vibe-trip[data-vibe-day="2"] .btn-secondary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #f8fafc !important;
+}
+
+body.vibe-trip .btn:hover {
+  transform: translateY(-2px);
+}
+
+body.vibe-trip .btn:disabled {
+  opacity: 0.45;
+  transform: none;
+}
+
+body.vibe-trip .btn-block {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+body.vibe-trip .result {
+  text-align: left;
+}
+
+body.vibe-trip .result-kicker {
+  margin: 0 0 0.75rem;
+  color: color-mix(in srgb, var(--accent) 78%, #101828);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+body.vibe-trip[data-vibe-day="2"] .result-kicker {
+  color: #67e8f9;
+}
+
+body.vibe-trip .result-label,
+body.vibe-trip .result-note {
+  margin: 0;
+  color: var(--premium-muted) !important;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+body.vibe-trip .result-label {
+  margin-bottom: 0.35rem;
+}
+
+body.vibe-trip .result-note {
+  margin: 0.55rem 0 1rem;
+  font-size: 0.92rem;
+}
+
+body.vibe-trip .price-box,
+body.vibe-trip .code-box {
+  border-radius: 22px !important;
+  padding: 1.35rem !important;
+  box-shadow: var(--premium-shadow) !important;
+}
+
+body.vibe-trip .price-box {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.78)),
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 50%) !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .price-box {
+  background:
+    linear-gradient(145deg, rgba(15, 23, 42, 0.94), rgba(30, 41, 59, 0.72)),
+    radial-gradient(circle at 100% 0%, rgba(57, 211, 230, 0.18), transparent 52%) !important;
+}
+
+body.vibe-trip .price-num {
+  margin: 0 !important;
+  color: var(--premium-ink) !important;
+  font-size: clamp(2.1rem, 9vw, 3.4rem) !important;
+  line-height: 0.96;
+  letter-spacing: -0.04em !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .price-num {
+  color: #f8fafc !important;
+}
+
+body.vibe-trip .code-box {
+  font-family: var(--vibe-font);
+  color: var(--premium-ink);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 9%, white), rgba(255, 255, 255, 0.92)) !important;
+  border: 1px dashed color-mix(in srgb, var(--accent) 38%, transparent) !important;
+  font-size: clamp(0.92rem, 3.4vw, 1.08rem) !important;
+  letter-spacing: 0.01em !important;
+}
+
+body.vibe-trip[data-vibe-day="2"] .code-box {
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.78) !important;
+}
+
+body.vibe-trip .calc-screen {
+  text-align: left;
+  padding: 1.2rem 0;
+}
+
+body.vibe-trip #resultScreen .calc-screen {
+  border-radius: 24px;
+  padding: 1.35rem;
+  background: var(--premium-surface);
+  border: 1px solid var(--premium-line);
+  box-shadow: var(--premium-shadow);
+}
+
+body.vibe-trip[data-vibe-day="2"] #resultScreen .calc-screen {
+  background: rgba(17, 24, 39, 0.72);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.vibe-trip .result-big {
+  margin: 0 0 0.85rem !important;
+  color: var(--premium-ink) !important;
+  font-family: var(--vibe-display);
+  font-size: clamp(1.55rem, 6.4vw, 2.55rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.03em;
+}
+
+body.vibe-trip[data-vibe-day="2"] .result-big {
+  color: #f8fafc !important;
+}
+
+body.vibe-trip .calc-screen .emoji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 18px 44px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+body.vibe-trip .start-screen {
+  text-align: left;
+  padding-top: 0.25rem;
+}
+
+body.vibe-trip .start-screen p {
+  margin: 0 0 1rem;
+  color: var(--premium-muted) !important;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+body.vibe-trip .hud {
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+body.vibe-trip .hud span {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  border: 1px solid var(--premium-line) !important;
+  border-radius: 15px !important;
+  box-shadow: var(--premium-shadow-sm) !important;
+  color: var(--premium-ink);
+  white-space: nowrap;
+}
+
+body.vibe-trip .hud .deficit {
+  color: color-mix(in srgb, var(--accent) 72%, #101828) !important;
+}
+
+body.vibe-trip .game-wrap {
+  height: min(55vh, 440px) !important;
+  border: 1px solid rgba(16, 24, 40, 0.14) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.38)),
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent2) 22%, transparent), transparent 54%) !important;
+  box-shadow: var(--premium-shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.74) !important;
+}
+
+body.vibe-trip[data-vibe-day="3"] .game-wrap {
+  border-color: rgba(16, 24, 40, 0.16) !important;
+  box-shadow: var(--premium-shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+body.vibe-trip[data-vibe-day="3"] .game-wrap::after {
+  opacity: 0.26;
+}
+
+body.vibe-trip .falling {
+  border-radius: 999px !important;
+  border: 1px solid rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 10px 28px rgba(16, 24, 40, 0.16) !important;
+}
+
+body.vibe-trip .falling.good {
+  background: rgba(255, 255, 255, 0.94) !important;
+  color: #101828 !important;
+}
+
+body.vibe-trip .falling.bad {
+  background: rgba(16, 24, 40, 0.92) !important;
+}
+
+body.vibe-trip .paddle {
+  height: 20px !important;
+  background: linear-gradient(90deg, var(--accent), var(--accent2)) !important;
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--accent) 30%, transparent) !important;
+}
+
+body.vibe-trip .end-screen {
+  text-align: left;
+}
+
+body.vibe-trip[data-vibe-day="3"] #endScreen:not(.hidden) h2 {
+  color: var(--premium-ink) !important;
+  background: none !important;
+  filter: none !important;
+  animation: none !important;
+}
+
+body.vibe-trip .caught-list {
+  padding: 1rem 1.1rem !important;
+  color: var(--premium-ink);
+}
+
+body.vibe-trip .mc-promo {
+  padding: 1.2rem !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.78)),
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 46%) !important;
+}
+
+body.vibe-trip .mc-kicker {
+  color: color-mix(in srgb, var(--accent) 76%, #101828) !important;
+  letter-spacing: 0.12em !important;
+}
+
+body.vibe-trip .mc-title {
+  color: var(--premium-ink) !important;
+  font-family: var(--vibe-display);
+  font-size: 1.28rem !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.02em;
+}
+
+body.vibe-trip .mc-datetime,
+body.vibe-trip .mc-list,
+body.vibe-trip .mc-gift {
+  color: var(--premium-muted) !important;
+}
+
+body.vibe-trip #restartBtn {
+  margin-bottom: 10px;
+}
+
+body.vibe-trip .gate {
+  background: transparent !important;
+}
+
+body.vibe-trip .gate-inner {
+  padding: 1.5rem !important;
+  text-align: left;
+}
+
+body.vibe-trip .gate-inner h2 {
+  color: var(--premium-ink) !important;
+  font-family: var(--vibe-display);
+  letter-spacing: -0.02em;
+}
+
+body.vibe-trip .gate-inner p {
+  color: var(--premium-muted) !important;
+}
+
+@media (max-width: 520px) {
+  body.vibe-trip .wrap,
+  body.vibe-trip #appRoot.wrap {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+    padding-bottom: max(1.75rem, calc(env(safe-area-inset-bottom) + 1rem));
+  }
+
+  body.vibe-trip .gate {
+    padding-left: max(0.65rem, env(safe-area-inset-left)) !important;
+    padding-right: max(0.65rem, env(safe-area-inset-right)) !important;
+    padding-top: max(0.75rem, env(safe-area-inset-top)) !important;
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  body.vibe-trip .gate-inner {
+    padding: 1.1rem 1rem !important;
+    border-radius: 20px !important;
+    width: min(100%, 26rem);
+    box-sizing: border-box;
+  }
+
+  body.vibe-trip header h1 {
+    font-size: clamp(1.35rem, 7.5vw, 2.05rem) !important;
+    line-height: 1.12 !important;
+  }
+
+  body.vibe-trip .nav-row {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: stretch;
+  }
+
+  body.vibe-trip .btn {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    min-height: 48px;
+    box-sizing: border-box;
+  }
+
+  body.vibe-trip .hud {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  body.vibe-trip .hud span {
+    white-space: normal;
+    text-align: center;
+    justify-content: center;
+    word-break: break-word;
+  }
+
+  body.vibe-trip .mc-title {
+    font-size: clamp(1rem, 4.6vw, 1.22rem) !important;
+    line-height: 1.22 !important;
+  }
+
+  body.vibe-trip .mc-promo {
+    padding: 1rem !important;
+  }
+
+  body.vibe-trip .mc-list {
+    padding-left: 1rem !important;
+    font-size: 0.84rem !important;
+  }
+
+  body.vibe-trip .end-screen {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  body.vibe-trip[data-vibe-day="3"] .game-wrap {
+    height: min(44vh, 360px) !important;
+    border-radius: 18px !important;
+  }
+
+  body.vibe-trip[data-vibe-day="3"] .freeze-label {
+    white-space: normal;
+    text-align: center;
+    max-width: min(92vw, 280px);
+    font-size: 0.92rem !important;
+    padding: 10px 16px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  body.vibe-trip .nav-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  body.vibe-trip .nav-row .btn {
+    width: 100% !important;
+    flex: none !important;
+  }
+}
+
+/* ═══════════ Акценты карточек стран (День 1) ═══════════ */
+body.vibe-trip[data-vibe-day="1"] .card[data-country="TH"] {
+  background: linear-gradient(160deg, rgba(0,188,212,0.13) 0%, var(--premium-surface) 48%) !important;
+  border-color: rgba(0,188,212,0.35) !important;
+}
+body.vibe-trip[data-vibe-day="1"] .card[data-country="TR"] {
+  background: linear-gradient(160deg, rgba(244,67,54,0.13) 0%, var(--premium-surface) 48%) !important;
+  border-color: rgba(244,67,54,0.32) !important;
+}
+body.vibe-trip[data-vibe-day="1"] .card[data-country="ID"] {
+  background: linear-gradient(160deg, rgba(56,142,60,0.13) 0%, var(--premium-surface) 48%) !important;
+  border-color: rgba(56,142,60,0.32) !important;
+}
+body.vibe-trip[data-vibe-day="1"] .card[data-country="AE"] {
+  background: linear-gradient(160deg, rgba(255,179,0,0.15) 0%, var(--premium-surface) 48%) !important;
+  border-color: rgba(255,179,0,0.38) !important;
+}
+body.vibe-trip[data-vibe-day="1"] .card[data-country="GE"] {
+  background: linear-gradient(160deg, rgba(156,39,176,0.13) 0%, var(--premium-surface) 48%) !important;
+  border-color: rgba(156,39,176,0.32) !important;
+}
+body.vibe-trip[data-vibe-day="1"] .card[data-country].selected {
+  filter: brightness(1.02) saturate(1.1);
+}
+
+/* День 3: игровое поле — встроенный SVG-паттерн поверх premium-градиентов (последний слой каскада) */
+body.vibe-trip[data-vibe-day="3"] .game-wrap {
+  height: min(55vh, 440px) !important;
+  border-width: 4px !important;
+  border-style: solid !important;
+  border-color: #1e1b4b !important;
+  border-radius: 24px !important;
+  box-shadow:
+    0 0 0 3px #faf5ff,
+    0 12px 0 #1e1b4b,
+    0 20px 40px rgba(30, 27, 75, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78) !important;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='8' cy='10' r='2' fill='%23a855f7' opacity='.18'/%3E%3Ccircle cx='28' cy='28' r='1.8' fill='%2306b6d4' opacity='.2'/%3E%3Cpath fill='none' stroke='%231e1b4b' stroke-opacity='.06' d='M0 20h40M20 0v40'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.38)),
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent2) 22%, transparent), transparent 54%) !important;
+  background-size:
+    40px 40px,
+    100% 100%,
+    100% 100% !important;
+  background-repeat:
+    repeat,
+    no-repeat,
+    no-repeat !important;
+}
+
+body.vibe-trip[data-vibe-day="3"] .game-wrap .paddle,
+body.vibe-trip[data-vibe-day="3"] .game-wrap .falling {
+  z-index: 5 !important;
+}

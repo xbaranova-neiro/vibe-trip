@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Вайб-трип — День 2 · А хватит ли денег?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: linear-gradient(165deg, #fff3e0 0%, #fce4ec 50%, #e3f2fd 100%);
+      --card: #fffefb;
+      --accent: #00bcd4;
+      --accent2: #e91e63;
+      --text: #263238;
+      --muted: #546e7a;
+      --radius: 18px;
+      --shadow: 0 12px 40px rgba(38, 50, 56, 0.1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .wrap { max-width: 520px; margin: 0 auto; padding: 1rem 1rem 2.5rem; }
+    header { text-align: center; padding: 0.5rem 0 1rem; }
+    header h1 {
+      font-size: clamp(1.35rem, 4vw, 1.75rem);
+      margin: 0 0 0.35rem;
+      font-weight: 800;
+    }
+    header p { margin: 0; color: var(--muted); font-weight: 600; font-size: 0.95rem; }
+    .progress { display: flex; gap: 6px; justify-content: center; margin-bottom: 1rem; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: rgba(38, 50, 56, 0.15);
+      transition: transform 0.2s, background 0.2s;
+    }
+    .dot.on { background: var(--accent2); transform: scale(1.15); }
+    .step-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 0.65rem; }
+    label.lbl { display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.9rem; }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      border: 2px solid rgba(38, 50, 56, 0.12);
+      font: inherit;
+      font-weight: 600;
+      background: #fff;
+    }
+    input:focus { outline: none; border-color: var(--accent); }
+    .muted { color: var(--muted); font-size: 0.88rem; margin-top: 8px; font-weight: 600; }
+    .card-opt {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      border: 2px solid transparent;
+      cursor: pointer;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      transition: border 0.15s, background 0.15s;
+    }
+    .card-opt.on { border-color: var(--accent2); background: #fce4ec; }
+    .card-opt input { margin-top: 4px; accent-color: var(--accent2); }
+    .card-opt .txt { font-weight: 700; font-size: 0.95rem; }
+    .nav-row { display: flex; gap: 10px; margin-top: 1.25rem; }
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.12s;
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: linear-gradient(135deg, #00bcd4, #7c4dff);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0, 188, 212, 0.35);
+    }
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.85);
+      color: var(--text);
+      border: 2px solid rgba(38, 50, 56, 0.1);
+    }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .hidden { display: none !important; }
+    .calc-screen {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .calc-screen .emoji { font-size: 3rem; animation: bob 0.8s ease-in-out infinite; }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .result-big {
+      font-size: clamp(1.35rem, 4.5vw, 1.85rem);
+      font-weight: 800;
+      color: var(--accent2);
+      margin: 1rem 0;
+      line-height: 1.3;
+    }
+    .range-wrap { margin: 12px 0 8px; }
+    input[type="range"] {
+      width: 100%;
+      height: 14px;
+      accent-color: var(--accent2);
+    }
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 6px;
+      gap: 4px;
+    }
+    .income-hint {
+      font-weight: 800;
+      font-size: 1rem;
+      margin-top: 10px;
+      min-height: 1.4em;
+      color: var(--accent2);
+    }
+    .link-shame {
+      display: inline-block;
+      margin-top: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font: inherit;
+      padding: 0;
+    }
+    .gate {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .gate-inner {
+      max-width: 420px;
+      background: var(--card);
+      padding: 1.75rem;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+    .gate-inner h2 { margin: 0 0 0.75rem; font-size: 1.3rem; }
+    .gate-inner p { margin: 0.5rem 0; color: var(--muted); font-weight: 600; line-height: 1.45; }
+    .gate-inner code { background: rgba(38, 50, 56, 0.08); padding: 2px 8px; border-radius: 8px; }
+    .gate .btn { margin-top: 12px; width: 100%; }
+  </style>
+  <link rel="stylesheet" href="vibe-ui.css?v=8" />
+</head>
+<body class="vibe-trip" data-vibe-day="2">
+  <script src="splash.js"></script>
+  <div id="gateCalendar" class="gate hidden">
+    <div class="gate-inner">
+      <h2>День 2 ещё закрыт 🔒</h2>
+      <p>Продолжение откроется завтра.</p>
+    </div>
+  </div>
+
+  <div id="gateDay1" class="gate hidden">
+    <div class="gate-inner">
+      <h2>Сначала день 1 🌴</h2>
+      <p>Нужен код поездки и сумма из конфигуратора — без этого посчитать, хватит ли денег, не получится.</p>
+    </div>
+  </div>
+
+  <div id="appRoot" class="wrap hidden">
+    <header>
+      <h1>А хватит ли денег?</h1>
+      <p>День 2 · Честный финансовый допрос</p>
+    </header>
+
+    <section id="step1">
+      <div class="progress" aria-hidden="true">
+        <span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+      <p class="step-title">Шаг 1. Поездка</p>
+      <label class="lbl" for="codeInput">Код из дня 1</label>
+      <input type="text" id="codeInput" placeholder="например TH-5star-AI-1line-e2" autocomplete="off" />
+      <p class="muted">Вставь код — подтянем сумму поездки автоматически.</p>
+      <button type="button" class="link-shame" id="shameBtn">Я не сохранил, позор мне</button>
+      <div id="manualBox" class="hidden" style="margin-top: 1rem;">
+        <label class="lbl" for="manualSum">Сумма поездки в ₽ (на двоих)</label>
+        <input type="number" id="manualSum" min="0" step="1000" placeholder="180000" />
+      </div>
+      <p class="muted" id="tripHint" style="margin-top:10px;"></p>
+      <div class="nav-row">
+        <span></span>
+        <button type="button" class="btn btn-primary" id="s1next">Дальше</button>
+      </div>
+    </section>
+
+    <section id="step2" class="hidden">
+      <div class="progress" aria-hidden="true">
+        <span class="dot"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+      <p class="step-title">Шаг 2. Основной доход в месяц</p>
+      <div class="range-wrap">
+        <input type="range" id="incomeRange" min="15000" max="250000" step="5000" value="45000" />
+        <div class="range-labels">
+          <span>до 30к · боец</span>
+          <span>30–80к</span>
+          <span>80–150к</span>
+          <span>150к+</span>
+        </div>
+      </div>
+      <p class="income-hint" id="incomeHint"></p>
+      <p class="muted" id="incomeValue"></p>
+      <div class="nav-row">
+        <button type="button" class="btn btn-ghost" data-back="1">Назад</button>
+        <button type="button" class="btn btn-primary" id="s2next">Дальше</button>
+      </div>
+    </section>
+
+    <section id="step3" class="hidden">
+      <div class="progress" aria-hidden="true">
+        <span class="dot"></span><span class="dot"></span><span class="dot on"></span><span class="dot"></span>
+      </div>
+      <p class="step-title">Шаг 3. Подработки (можно несколько)</p>
+      <label class="card-opt"><input type="checkbox" name="side" value="car" /> <span class="txt">🚗 Иногда вожу на своей машине</span></label>
+      <label class="card-opt"><input type="checkbox" name="side" value="photo" /> <span class="txt">📸 Делаю фото/видео</span></label>
+      <label class="card-opt"><input type="checkbox" name="side" value="texts" /> <span class="txt">✍️ Пишу тексты</span></label>
+      <label class="card-opt"><input type="checkbox" name="side" value="repair" /> <span class="txt">🧹 Помогаю с уборкой / ремонтом</span></label>
+      <label class="card-opt"><input type="checkbox" name="side" value="none" /> <span class="txt">😶 Никак, я гордый</span></label>
+      <div class="nav-row">
+        <button type="button" class="btn btn-ghost" data-back="2">Назад</button>
+        <button type="button" class="btn btn-primary" id="s3next">Дальше</button>
+      </div>
+    </section>
+
+    <section id="step4" class="hidden">
+      <div class="progress" aria-hidden="true">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot on"></span>
+      </div>
+      <p class="step-title">Шаг 4. Скрытые резервы</p>
+      <label class="card-opt"><input type="checkbox" name="res" value="mom" /> <span class="txt">💳 Можно занять у мамы</span></label>
+      <label class="card-opt"><input type="checkbox" name="res" value="avito" /> <span class="txt">📦 Продам что-нибудь на Авито</span></label>
+      <label class="card-opt"><input type="checkbox" name="res" value="lottery" /> <span class="txt">🎰 Повезёт — куплю лотерейный билет</span></label>
+      <label class="card-opt"><input type="checkbox" name="res" value="none" /> <span class="txt">🙅 Ничего такого нет</span></label>
+      <div class="nav-row">
+        <button type="button" class="btn btn-ghost" data-back="3">Назад</button>
+        <button type="button" class="btn btn-primary" id="calcBtn">Посчитать</button>
+      </div>
+    </section>
+
+    <section id="calcAnim" class="hidden calc-screen">
+      <div class="emoji">🤔</div>
+      <p style="font-weight:800;font-size:1.15rem;margin-top:1rem;">Считаем твой финансовый потенциал...</p>
+    </section>
+
+    <section id="resultScreen" class="hidden">
+      <div class="calc-screen">
+        <p class="result-kicker">Финансовый разрыв</p>
+        <p class="result-big" id="deficitOut"></p>
+        <p class="result-note">Запомни эту цифру. Завтра узнаешь, как её закрыть.</p>
+        <button type="button" class="btn btn-ghost btn-block" id="shareBtn">Поделиться результатом</button>
+        <a class="btn btn-primary btn-block" id="day3Link" href="#">День 3: Заработай на мечту</a>
+      </div>
+    </section>
+  </div>
+
+  <script src="pricing.js"></script>
+  <script src="vibe-fx.js?v=7"></script>
+  <script>
+    (function () {
+      const P = window.VibeTripPricing;
+      const SK = P.STORAGE_KEYS;
+      const preview = P.isPreviewUnlock(window.location.search);
+      const cal = P.getMaxAppDayByCalendar();
+
+      function readDay1Ls() {
+        try {
+          const raw = localStorage.getItem(SK.day1);
+          if (!raw) return null;
+          const o = JSON.parse(raw);
+          if (!o || typeof o.sum !== 'number' || o.sum <= 0) return null;
+          return o;
+        } catch (_) {
+          return null;
+        }
+      }
+
+      function hasTripFromUrl(params) {
+        const sumStr = params.get('sum');
+        let sum = sumStr != null && sumStr !== '' ? Number(sumStr) : NaN;
+        if (!Number.isFinite(sum) || sum <= 0) sum = NaN;
+        const code = (params.get('code') || '').trim();
+        if (!Number.isFinite(sum) && code) {
+          const pr = P.tripPriceFromCode(code);
+          if (Number.isFinite(pr)) sum = pr;
+        }
+        return Number.isFinite(sum) && sum > 0;
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const fromUrl = hasTripFromUrl(params);
+      const fromLs = !!readDay1Ls();
+
+      if (!preview && cal < 2) {
+        document.getElementById('gateCalendar').classList.remove('hidden');
+        return;
+      }
+      if (!fromUrl && !fromLs && !preview) {
+        document.getElementById('gateDay1').classList.remove('hidden');
+        return;
+      }
+
+      document.getElementById('appRoot').classList.remove('hidden');
+
+      let tripSum = NaN;
+      const initialCode = params.get('code') || '';
+
+      const codeInput = document.getElementById('codeInput');
+      const manualBox = document.getElementById('manualBox');
+      const manualSum = document.getElementById('manualSum');
+      const tripHint = document.getElementById('tripHint');
+      const shameBtn = document.getElementById('shameBtn');
+      const incomeRange = document.getElementById('incomeRange');
+      const incomeHint = document.getElementById('incomeHint');
+      const incomeValue = document.getElementById('incomeValue');
+      const deficitOut = document.getElementById('deficitOut');
+      const day3Link = document.getElementById('day3Link');
+      const shareBtn = document.getElementById('shareBtn');
+
+      const sumStr = params.get('sum');
+      if (sumStr != null && sumStr !== '') {
+        const n = Number(sumStr);
+        if (Number.isFinite(n) && n > 0) tripSum = n;
+      }
+      if (initialCode) codeInput.value = initialCode;
+      if (!Number.isFinite(tripSum) && initialCode) {
+        const p = P.tripPriceFromCode(initialCode);
+        if (Number.isFinite(p)) tripSum = p;
+      }
+      if (!Number.isFinite(tripSum)) {
+        const ls = readDay1Ls();
+        if (ls) {
+          tripSum = ls.sum;
+          if (!codeInput.value.trim() && ls.code) codeInput.value = ls.code;
+        }
+      }
+
+      if (preview && !Number.isFinite(tripSum)) {
+        tripSum = 218000;
+        if (!codeInput.value.trim()) codeInput.value = 'TH-3star-cafe-5min-e2';
+      }
+
+      function updateTripFromCode() {
+        const code = codeInput.value.trim();
+        const parsed = P.parseTripCode(code);
+        if (parsed) {
+          tripSum = P.calcTripPrice(parsed);
+          tripHint.textContent = 'Поездка: ~' + tripSum.toLocaleString('ru-RU') + ' ₽';
+          manualBox.classList.add('hidden');
+          return true;
+        }
+        if (manualBox.classList.contains('hidden')) {
+          tripHint.textContent = 'Не узнали код — проверь или введи сумму вручную.';
+        }
+        return false;
+      }
+
+      codeInput.addEventListener('input', updateTripFromCode);
+      if (initialCode || codeInput.value.trim()) updateTripFromCode();
+      else if (Number.isFinite(tripSum)) {
+        tripHint.textContent = 'Поездка: ~' + tripSum.toLocaleString('ru-RU') + ' ₽';
+      }
+
+      shameBtn.addEventListener('click', () => {
+        manualBox.classList.remove('hidden');
+        tripHint.textContent = 'Окей, никто не узнает. Только честная сумма.';
+      });
+
+      manualSum.addEventListener('input', () => {
+        const v = parseInt(manualSum.value, 10);
+        if (Number.isFinite(v)) {
+          tripSum = v;
+          tripHint.textContent = 'Поездка: ~' + tripSum.toLocaleString('ru-RU') + ' ₽';
+        }
+      });
+
+      function resolveTripSum() {
+        if (!manualBox.classList.contains('hidden')) {
+          const v = parseInt(manualSum.value, 10);
+          if (Number.isFinite(v) && v > 0) return v;
+        }
+        const code = codeInput.value.trim();
+        const parsed = P.parseTripCode(code);
+        if (parsed) return P.calcTripPrice(parsed);
+        const ls = readDay1Ls();
+        if (ls && Number.isFinite(ls.sum) && ls.sum > 0) return ls.sum;
+        const sumStr2 = new URLSearchParams(window.location.search).get('sum');
+        if (sumStr2 != null && sumStr2 !== '') {
+          const n = Number(sumStr2);
+          if (Number.isFinite(n) && n > 0) return n;
+        }
+        return NaN;
+      }
+
+      function show(el, on) {
+        document.getElementById(el).classList.toggle('hidden', !on);
+      }
+
+      function incomeBracketText(v) {
+        if (v < 30000) return 'до 30к — «боец»';
+        if (v < 80000) return '30–80к — «держишься»';
+        if (v < 150000) return '80–150к — «почти можешь»';
+        return '150к+ — «а, вы хотите не 1 путешествие, а 2»';
+      }
+
+      function syncIncome() {
+        const v = parseInt(incomeRange.value, 10);
+        incomeHint.textContent = incomeBracketText(v);
+        incomeValue.textContent = 'Сейчас: ' + v.toLocaleString('ru-RU') + ' ₽ / мес';
+      }
+      incomeRange.addEventListener('input', syncIncome);
+      syncIncome();
+
+      document.querySelectorAll('[data-back]').forEach((b) => {
+        b.addEventListener('click', () => {
+          const n = b.getAttribute('data-back');
+          show('step1', n === '1');
+          show('step2', n === '2');
+          show('step3', n === '3');
+          show('step4', n === '4');
+        });
+      });
+
+      document.getElementById('s1next').addEventListener('click', () => {
+        if (!manualBox.classList.contains('hidden')) {
+          const v = parseInt(manualSum.value, 10);
+          if (Number.isFinite(v)) tripSum = v;
+        } else {
+          updateTripFromCode();
+        }
+        tripSum = resolveTripSum();
+        if (!Number.isFinite(tripSum) || tripSum <= 0) {
+          tripHint.textContent = 'Нужен рабочий код или сумма поездки 🙂';
+          return;
+        }
+        show('step1', false);
+        show('step2', true);
+      });
+
+      document.getElementById('s2next').addEventListener('click', () => {
+        show('step2', false);
+        show('step3', true);
+      });
+
+      document.getElementById('s3next').addEventListener('click', () => {
+        show('step3', false);
+        show('step4', true);
+      });
+
+      const SIDE_BONUS = { car: 14000, photo: 20000, texts: 9000, repair: 8000, none: 0 };
+      const RES_BONUS = { mom: 45000, avito: 18000, lottery: 800, none: 0 };
+
+      function calcPotential() {
+        const income = parseInt(incomeRange.value, 10);
+        const savingsRate = 0.19;
+        const horizonMonths = 4;
+        let tierMul = 1;
+        if (income < 30000) tierMul = 0.92;
+        else if (income >= 150000) tierMul = 1.08;
+
+        let sideTotal = 0;
+        const sideChecks = document.querySelectorAll('input[name="side"]:checked');
+        let hasProud = false;
+        sideChecks.forEach((c) => {
+          if (c.value === 'none') hasProud = true;
+          else sideTotal += SIDE_BONUS[c.value] || 0;
+        });
+        if (hasProud) sideTotal = 0;
+
+        let resTotal = 0;
+        document.querySelectorAll('input[name="res"]:checked').forEach((c) => {
+          resTotal += RES_BONUS[c.value] || 0;
+        });
+
+        const savedCore = income * savingsRate * horizonMonths * tierMul;
+        return Math.round(savedCore + sideTotal + resTotal);
+      }
+
+      if (Number.isFinite(tripSum) && tripSum > 0 && fromUrl) {
+        try {
+          localStorage.setItem(
+            SK.day1,
+            JSON.stringify({
+              code: codeInput.value.trim() || (params.get('code') || ''),
+              sum: tripSum,
+              at: Date.now(),
+            })
+          );
+        } catch (_) {}
+      }
+
+      document.getElementById('calcBtn').addEventListener('click', () => {
+        tripSum = resolveTripSum();
+        if (!Number.isFinite(tripSum) || tripSum <= 0) {
+          tripHint.textContent = 'Пропала сумма поездки — вернись на шаг 1 и проверь код или сумму.';
+          show('step4', false);
+          show('step1', true);
+          return;
+        }
+
+        show('step4', false);
+        show('calcAnim', true);
+        const potential = calcPotential();
+        const deficit = Math.max(0, Math.round(tripSum - potential));
+
+        setTimeout(() => {
+          show('calcAnim', false);
+          show('resultScreen', true);
+          const defSpan = document.createElement('span');
+          defSpan.style.fontSize = '2rem';
+          const coverage = tripSum > 0 ? Math.min(100, Math.round((potential / tripSum) * 100)) : 0;
+          deficitOut.innerHTML = 'На твою поездку не хватает<br />';
+          deficitOut.appendChild(defSpan);
+          if (window.vibeCountUp) {
+            window.vibeCountUp(defSpan, {
+              from: 0,
+              to: deficit,
+              direction: 'up',
+              delay: 0,
+              duration: 2,
+              separator: ' ',
+              prefix: '',
+              suffix: ' ₽',
+              className: 'count-up-text',
+              startWhen: false,
+            });
+          } else {
+            defSpan.textContent = deficit.toLocaleString('ru-RU') + ' ₽';
+          }
+          const barWrap = document.createElement('span');
+          barWrap.className = 'coverage-bar-wrap';
+          const barFill = document.createElement('span');
+          barFill.className = 'coverage-bar-fill';
+          barFill.style.width = '0%';
+          barWrap.appendChild(barFill);
+          deficitOut.appendChild(barWrap);
+          const coverLabel = document.createElement('span');
+          coverLabel.className = 'coverage-label';
+          coverLabel.textContent = 'потенциал закрывает ' + coverage + '% стоимости поездки';
+          deficitOut.appendChild(coverLabel);
+          setTimeout(() => { barFill.style.width = coverage + '%'; }, 80);
+
+          const url = new URL('day3.html', window.location.href);
+          url.searchParams.set('deficit', String(deficit));
+          url.searchParams.set('sum', String(tripSum));
+          const code = codeInput.value.trim();
+          if (P.parseTripCode(code)) url.searchParams.set('code', code);
+          if (P.isPreviewUnlock(window.location.search)) url.searchParams.set('preview', '1');
+          day3Link.href = url.toString();
+
+          window.__vibeResult = { deficit, tripSum, potential };
+
+          try {
+            localStorage.setItem(
+              SK.day2,
+              JSON.stringify({
+                deficit: deficit,
+                tripSum: tripSum,
+                potential: potential,
+                code: code,
+                at: Date.now(),
+              })
+            );
+          } catch (_) {}
+        }, 2200);
+      });
+
+      shareBtn.addEventListener('click', async () => {
+        const d = window.__vibeResult;
+        const text = d && d.deficit === 0
+          ? 'Вайб-трип: у меня хватает на поездку мечты! 🎉'
+          : 'Вайб-трип: на мою поездку не хватило ' + (d ? d.deficit.toLocaleString('ru-RU') : '') + ' ₽ 😅';
+        try {
+          if (navigator.share) await navigator.share({ title: 'Вайб-трип', text });
+          else await navigator.clipboard.writeText(text);
+        } catch {
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch (_) {}
+        }
+      });
+
+      document.querySelectorAll('.card-opt').forEach((label) => {
+        const cb = label.querySelector('input[type="checkbox"]');
+        if (!cb) return;
+        cb.addEventListener('change', () => {
+          label.classList.toggle('on', cb.checked);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Вайб-трип — День 3 · Заработай на мечту</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: linear-gradient(180deg, #fffde7 0%, #f8bbd0 40%, #81d4fa 100%);
+      --text: #4a148c;
+      --muted: #6a1b9a;
+      --card: rgba(255, 255, 255, 0.92);
+      --accent: #ff4081;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      color: var(--text);
+      overflow-x: hidden;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #gameScreen {
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    #startScreen,
+    #endScreen,
+    .gate {
+      -webkit-user-select: text;
+      user-select: text;
+    }
+    .wrap { max-width: 520px; margin: 0 auto; padding: 0.75rem 0.75rem 1.5rem; }
+    header { text-align: center; padding: 0.25rem 0 0.5rem; }
+    header h1 {
+      font-size: clamp(1.2rem, 4vw, 1.55rem);
+      margin: 0 0 0.25rem;
+      font-weight: 800;
+    }
+    header p { margin: 0; font-weight: 600; color: var(--muted); font-size: 0.9rem; }
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+    .hud span { background: var(--card); padding: 8px 12px; border-radius: 999px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); }
+    .deficit { color: var(--accent); }
+    .game-wrap {
+      position: relative;
+      width: 100%;
+      height: min(52vh, 420px);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(129, 212, 250, 0.25));
+      border-radius: 20px;
+      overflow: hidden;
+      border: 3px solid rgba(255, 255, 255, 0.65);
+      box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.5);
+      touch-action: none;
+    }
+    .game-wrap.freeze { filter: grayscale(0.3); }
+    .falling {
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 6px 10px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.72rem;
+      white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      transform: translateX(-50%);
+      max-width: 95%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .falling.good { background: #fff; color: var(--text); border: 2px solid #ce93d8; }
+    .falling.bad { background: #37474f; color: #fff; border: 2px solid #263238; }
+    .paddle {
+      position: absolute;
+      bottom: 10px;
+      height: 18px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff4081, #7c4dff);
+      box-shadow: 0 6px 20px rgba(124, 77, 255, 0.45);
+      transform: translateX(-50%);
+      width: 26%;
+      min-width: 88px;
+    }
+    .hint-move {
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin: 8px 0 4px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 20px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 10px;
+      background: linear-gradient(135deg, #ff4081, #ff9100);
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 10px 28px rgba(255, 64, 129, 0.4);
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text);
+      border: 2px solid rgba(74, 20, 140, 0.15);
+      box-shadow: none;
+    }
+    .hidden { display: none !important; }
+    .end-screen { text-align: center; padding: 1rem 0.5rem; animation: in 0.45s ease; }
+    @keyframes in {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .end-screen h2 { font-size: 1.35rem; margin: 0 0 0.75rem; }
+    .caught-list {
+      text-align: left;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin: 12px 0;
+      font-weight: 700;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .start-screen { text-align: center; padding: 1rem 0; }
+    .start-screen p { font-weight: 600; color: var(--muted); }
+    .mc-promo {
+      text-align: left;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin: 14px 0 16px;
+      border: 2px solid rgba(255, 64, 129, 0.2);
+    }
+    .mc-kicker {
+      margin: 0 0 6px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #c2185b;
+    }
+    .mc-title {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      line-height: 1.35;
+      color: var(--text);
+    }
+    .mc-datetime {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .mc-list {
+      margin: 0;
+      padding-left: 1.1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .mc-list li { margin: 0.4rem 0; }
+    .mc-gift {
+      margin: 12px 0 0;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .gate {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .gate-inner {
+      max-width: 420px;
+      background: var(--card);
+      padding: 1.75rem;
+      border-radius: 24px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+    .gate-inner h2 { margin: 0 0 0.75rem; font-size: 1.3rem; }
+    .gate-inner p { margin: 0.5rem 0; color: var(--muted); font-weight: 600; line-height: 1.45; }
+    .gate-inner code { background: rgba(74, 20, 140, 0.08); padding: 2px 8px; border-radius: 8px; }
+    .gate .btn { margin-top: 12px; width: 100%; }
+    .catch-popup {
+      position: absolute;
+      font-weight: 800;
+      font-size: 0.88rem;
+      color: #00c853;
+      pointer-events: none;
+      white-space: nowrap;
+      transform: translateX(-50%);
+      animation: float-up 0.75s ease-out forwards;
+    }
+    @keyframes float-up {
+      from { opacity: 1; transform: translateX(-50%) translateY(0); }
+      to   { opacity: 0; transform: translateX(-50%) translateY(-50px); }
+    }
+    .paddle { transition: background 0.15s; }
+    .paddle.flash-good { background: linear-gradient(90deg, #00e676, #69f0ae) !important; }
+    .paddle.flash-bad  { background: linear-gradient(90deg, #ff5252, #ff6d00) !important; }
+    .freeze-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(30, 41, 59, 0.82);
+      color: #bae6fd;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 10px 24px;
+      border-radius: 999px;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      animation: freeze-pulse 0.6s ease-in-out infinite alternate;
+    }
+    @keyframes freeze-pulse {
+      from { opacity: 0.85; }
+      to   { opacity: 1; }
+    }
+  </style>
+  <link rel="stylesheet" href="vibe-ui.css?v=8" />
+</head>
+<body class="vibe-trip" data-vibe-day="3">
+  <script src="splash.js"></script>
+  <div id="gateCalendar" class="gate hidden">
+    <div class="gate-inner">
+      <h2>День 3 ещё закрыт 🔒</h2>
+      <p>Финал откроется завтра.</p>
+    </div>
+  </div>
+
+  <div id="gateDay2" class="gate hidden">
+    <div class="gate-inner">
+      <h2>Сначала день 2 💸</h2>
+      <p>Нужна цифра «не хватает» из финансового калькулятора — приходи сюда по ссылке из дня 2 после расчёта.</p>
+    </div>
+  </div>
+
+  <div id="appRoot" class="wrap hidden">
+    <section id="startScreen">
+      <header>
+        <h1>Заработай на мечту</h1>
+        <p>День 3 · Лови заказы вайб-кодера</p>
+      </header>
+      <div class="start-screen">
+        <p id="startBlurb"></p>
+        <button type="button" class="btn" id="startBtn">Начать игру</button>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="hidden">
+      <header>
+        <h1>Заработай на мечту</h1>
+        <p>Лови услуги · избегай помех</p>
+      </header>
+      <div class="hud">
+        <span>⏱ <span id="timeLeft">45</span> сек</span>
+        <span class="deficit">Не хватает: <span id="deficitHud">0</span> ₽</span>
+      </div>
+      <div class="game-wrap" id="gameWrap">
+        <div class="paddle" id="paddle"></div>
+        <div class="freeze-label hidden" id="freezeLabel">🧊 Заморожен</div>
+      </div>
+      <p class="hint-move">Тяни палец или мышь влево-вправо · это твоя корзина</p>
+    </section>
+
+    <section id="endScreen" class="hidden end-screen">
+      <h2 id="endTitle"></h2>
+      <div class="caught-list" id="caughtList"></div>
+      <p id="endSub" class="result-note"></p>
+      <button type="button" class="btn btn-secondary" id="restartBtn">Сыграть ещё раз</button>
+
+      <div class="mc-promo">
+        <p class="mc-kicker">Бесплатный мастер-класс</p>
+        <h3 class="mc-title">Как за 3 часа создать сайт, бот и мини-сервис без технических знаний</h3>
+        <p class="mc-datetime">📅 <strong>6 мая</strong> · 🕖 <strong>19:00</strong> · поставь напоминание</p>
+        <p style="margin:0 0 8px;font-size:0.88rem;font-weight:700;color:var(--muted);">На вебинаре разберём:</p>
+        <ul class="mc-list">
+          <li>🔹 как собрать бота во ВКонтакте — заявки, ответы, бизнес не только в Telegram;</li>
+          <li>🔹 как делать решения для MAX и других площадок — работай там, где твоя аудитория;</li>
+          <li>🔹 как подключить GigaChat к сайту — не «визитка», а диалог и запросы;</li>
+          <li>🔹 как собрать простой веб-сервис — калькулятор, игру, форму, мини-инструмент под задачу;</li>
+          <li>🔹 как на этом зарабатывать — лендинги, боты, мини-игры, калькуляторы, автоматизации.</li>
+        </ul>
+        <p class="mc-gift">Нажми «Забрать подарок» — получишь гид «Как зарабатывать в условиях 🍑» и запись на мастер-класс.</p>
+      </div>
+
+      <a class="btn" id="ctaBtn" href="https://xeniabaranova-school.ru/vibe-code_new2?utm_source=vk&utm_medium=inter" target="_blank" rel="noopener noreferrer">Забрать подарок и зарегистрироваться</a>
+    </section>
+  </div>
+
+  <script src="pricing.js"></script>
+  <script src="vibe-fx.js?v=7"></script>
+  <script>
+    (function () {
+      const P = window.VibeTripPricing;
+      const SK = P.STORAGE_KEYS;
+      const preview = P.isPreviewUnlock(window.location.search);
+      const cal = P.getMaxAppDayByCalendar();
+
+      function readDay2Ls() {
+        try {
+          const raw = localStorage.getItem(SK.day2);
+          if (!raw) return null;
+          const o = JSON.parse(raw);
+          if (o == null || typeof o.deficit !== 'number' || !Number.isFinite(o.deficit) || o.deficit < 0) return null;
+          return o;
+        } catch (_) {
+          return null;
+        }
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const deficitStr = params.get('deficit');
+      let deficit = deficitStr != null && deficitStr !== '' ? Number(deficitStr) : NaN;
+      if (!Number.isFinite(deficit)) {
+        const ls2 = readDay2Ls();
+        if (ls2) deficit = ls2.deficit;
+      }
+      if (preview && !Number.isFinite(deficit)) deficit = 75000;
+
+      const hasDeficit = Number.isFinite(deficit) && deficit >= 0;
+
+      if (!preview && cal < 3) {
+        document.getElementById('gateCalendar').classList.remove('hidden');
+        return;
+      }
+      if (!preview && !hasDeficit) {
+        document.getElementById('gateDay2').classList.remove('hidden');
+        return;
+      }
+
+      document.getElementById('appRoot').classList.remove('hidden');
+
+      const GOODS = [
+        { id: 'landing', label: 'Лендинг под ключ', price: 25000, icon: '📄' },
+        { id: 'bot', label: 'Телеграм-бот для бизнеса', price: 15000, icon: '🤖' },
+        { id: 'shop', label: 'Интернет-магазин', price: 40000, icon: '🛒' },
+        { id: 'game', label: 'Мини-игра для поста', price: 10000, icon: '🎮' },
+        { id: 'quiz', label: 'Квиз для прогрева', price: 8000, icon: '❓' },
+        { id: 'funnel', label: 'Автоворонка', price: 20000, icon: '🔄' },
+        { id: 'calc', label: 'Калькулятор на сайт', price: 12000, icon: '🧮' },
+      ];
+      const BAD = [
+        { id: 'lazy', label: 'Прокрастинация', icon: '😴', kind: 'time', penaltySec: 5 },
+        { id: 'tomorrow', label: 'Подумаю завтра', icon: '📵', kind: 'freeze', freezeMs: 2000 },
+      ];
+
+      const startBlurb = document.getElementById('startBlurb');
+      if (deficit === 0) {
+        startBlurb.innerHTML =
+          'По расчёту разрыва нет — можно просто потренироваться ловить заказы 🙂 Лови услуги сверху; помехи не лови.';
+      } else {
+        startBlurb.innerHTML =
+          'Тебе нужно закрыть разрыв <strong>' +
+          deficit.toLocaleString('ru-RU') +
+          ' ₽</strong>. Лови заказы сверху — каждый уменьшает долг. Помехи не лови: они крадут время или замораживают корзину.';
+      }
+
+      const gameWrap = document.getElementById('gameWrap');
+      const paddle = document.getElementById('paddle');
+      const freezeLabel = document.getElementById('freezeLabel');
+      const timeLeftEl = document.getElementById('timeLeft');
+      const deficitHud = document.getElementById('deficitHud');
+      const startBtn = document.getElementById('startBtn');
+      const startScreen = document.getElementById('startScreen');
+      const gameScreen = document.getElementById('gameScreen');
+      const endScreen = document.getElementById('endScreen');
+      const endTitle = document.getElementById('endTitle');
+      const caughtList = document.getElementById('caughtList');
+      const endSub = document.getElementById('endSub');
+      const ctaBtn = document.getElementById('ctaBtn');
+
+      const MC_REGISTER =
+        'https://xeniabaranova-school.ru/vibe-code_new2?utm_source=vk&utm_medium=inter';
+      ctaBtn.href = MC_REGISTER;
+
+      let gameTimer = 45;
+      let remaining = deficit;
+      let caught = [];
+      let raf = 0;
+      let items = [];
+      let paddleX = 0.5;
+      let frozenUntil = 0;
+      let spawnAcc = 0;
+      let lastTs = 0;
+      let ended = false;
+
+      function fmtMoney(n) {
+        return n.toLocaleString('ru-RU') + ' ₽';
+      }
+
+      function syncHud() {
+        deficitHud.textContent = Math.max(0, Math.round(remaining)).toLocaleString('ru-RU');
+        timeLeftEl.textContent = Math.max(0, Math.ceil(gameTimer));
+      }
+
+      function layoutPaddle() {
+        const w = gameWrap.clientWidth;
+        const pw = paddle.offsetWidth;
+        const x = paddleX * (w - pw) + pw / 2;
+        paddle.style.left = x + 'px';
+      }
+
+      function spawnItem() {
+        const roll = Math.random();
+        const el = document.createElement('div');
+        el.className = 'falling';
+        if (roll < 0.82) {
+          const g = GOODS[(Math.random() * GOODS.length) | 0];
+          el.className += ' good';
+          el.textContent = g.icon + ' ' + g.label + ' · ' + fmtMoney(g.price);
+          el.dataset.kind = 'good';
+          el.dataset.price = String(g.price);
+          el.dataset.label = g.label;
+          el.dataset.icon = g.icon;
+        } else {
+          const b = BAD[(Math.random() * BAD.length) | 0];
+          el.className += ' bad';
+          el.textContent = b.icon + ' ' + b.label;
+          el.dataset.kind = 'bad';
+          el.dataset.badId = b.id;
+        }
+        const xFrac = 0.08 + Math.random() * 0.84;
+        el.style.left = xFrac * 100 + '%';
+        el.style.top = '-40px';
+        gameWrap.appendChild(el);
+        items.push({
+          el,
+          y: -36,
+          vy: 110 + Math.random() * 90,
+          xFrac,
+          w: 120,
+          h: 32,
+        });
+      }
+
+      function removeItem(i) {
+        const it = items[i];
+        if (it.el.parentNode) it.el.parentNode.removeChild(it.el);
+        items.splice(i, 1);
+      }
+
+      function flashPaddle(type) {
+        paddle.classList.add('flash-' + type);
+        setTimeout(() => paddle.classList.remove('flash-' + type), 350);
+      }
+
+      function showCatchPopup(text) {
+        const pw = paddle.offsetWidth;
+        const x = paddleX * (gameWrap.clientWidth - pw) + pw / 2;
+        const el = document.createElement('div');
+        el.className = 'catch-popup';
+        el.textContent = text;
+        el.style.left = x + 'px';
+        el.style.top = (gameWrap.clientHeight - 58) + 'px';
+        gameWrap.appendChild(el);
+        setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 750);
+      }
+
+      function endGame(won) {
+        if (ended) return;
+        ended = true;
+        cancelAnimationFrame(raf);
+        items.forEach((it) => {
+          if (it.el.parentNode) it.el.parentNode.removeChild(it.el);
+        });
+        items = [];
+        gameScreen.classList.add('hidden');
+        endScreen.classList.remove('hidden');
+
+        const totalCaught = caught.reduce((s, c) => s + c.price, 0);
+        if (caught.length === 0) {
+          caughtList.textContent = 'Пока пусто — зато ты попробовал 🙂';
+        } else {
+          const sumLine = caught.map((c) => c.icon + ' ' + c.label).join(' + ');
+          caughtList.innerHTML =
+            '<div style="margin-bottom:8px;">Ты собрал:</div>' +
+            '<div>' +
+            sumLine +
+            ' = ' +
+            fmtMoney(totalCaught) +
+            '</div>';
+        }
+
+        if (deficit === 0) {
+          endTitle.textContent = caught.length > 0 ? 'Тренировка пройдена! 🎯' : 'Попробуй поймать заказы 🙂';
+          endSub.textContent = 'Разрыва нет — осталось собрать первый заказ в реальности.';
+        } else if (won || remaining <= 0) {
+          endTitle.textContent = 'Поездка оплачена! 🎉';
+          endSub.textContent = 'Осталось научиться делать это по-настоящему.';
+        } else {
+          endTitle.textContent = 'Ещё чуть-чуть!';
+          endSub.textContent = 'Но ты понял принцип — заказы падают, корзина ловит, счёт растёт.';
+        }
+      }
+
+      function loop(ts) {
+        if (ended) return;
+        if (!lastTs) lastTs = ts;
+        const dt = Math.min(0.05, (ts - lastTs) / 1000);
+        lastTs = ts;
+
+        const now = performance.now();
+        const frozen = now < frozenUntil;
+        gameWrap.classList.toggle('freeze', frozen);
+        freezeLabel.classList.toggle('hidden', !frozen);
+
+        gameTimer -= dt;
+        if (gameTimer <= 0) {
+          gameTimer = 0;
+          syncHud();
+          endGame(remaining <= 0);
+          return;
+        }
+
+        spawnAcc += dt;
+        const spawnEvery = Math.max(0.55, remaining > 20000 ? 0.9 : 0.72);
+        while (spawnAcc >= spawnEvery) {
+          spawnAcc -= spawnEvery;
+          spawnItem();
+        }
+
+        const gh = gameWrap.clientHeight;
+        const gw = gameWrap.clientWidth;
+        const paddleRect = {
+          left: paddleX * (gw - paddle.offsetWidth),
+          width: paddle.offsetWidth,
+          top: gh - 10 - paddle.offsetHeight,
+        };
+
+        for (let i = items.length - 1; i >= 0; i--) {
+          const it = items[i];
+          it.y += it.vy * dt;
+          it.el.style.top = it.y + 'px';
+
+          const rect = it.el.getBoundingClientRect();
+          const wrapRect = gameWrap.getBoundingClientRect();
+          const ix = rect.left - wrapRect.left + rect.width / 2;
+          const iy = rect.bottom - wrapRect.top;
+
+          if (iy >= paddleRect.top && iy <= gh - 4) {
+            const hit =
+              ix >= paddleRect.left - 8 && ix <= paddleRect.left + paddleRect.width + 8;
+            if (hit) {
+              if (it.el.dataset.kind === 'good') {
+                const price = parseInt(it.el.dataset.price, 10);
+                const label = it.el.dataset.label;
+                const icon = it.el.dataset.icon || '';
+                remaining -= price;
+                caught.push({ label, price, icon });
+                flashPaddle('good');
+                showCatchPopup('+' + fmtMoney(price));
+                if (window.vibeClickSpark) {
+                  const r = it.el.getBoundingClientRect();
+                  const wr = gameWrap.getBoundingClientRect();
+                  window.vibeClickSpark(r.left - wr.left + r.width/2, r.top - wr.top, gameWrap);
+                }
+                if (remaining <= 0) {
+                  remaining = 0;
+                  syncHud();
+                  endGame(true);
+                  return;
+                }
+              } else {
+                const bid = it.el.dataset.badId;
+                const b = BAD.find((x) => x.id === bid);
+                if (b && b.kind === 'time') gameTimer -= b.penaltySec;
+                if (b && b.kind === 'freeze') frozenUntil = now + b.freezeMs;
+                flashPaddle('bad');
+              }
+              removeItem(i);
+              continue;
+            }
+          }
+
+          if (it.y > gh + 20) removeItem(i);
+        }
+
+        syncHud();
+        raf = requestAnimationFrame(loop);
+      }
+
+      function setPaddleFromClientX(clientX) {
+        const rect = gameWrap.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const pw = paddle.offsetWidth;
+        paddleX = Math.max(0, Math.min(1, (x - pw / 2) / (rect.width - pw)));
+        layoutPaddle();
+      }
+
+      gameWrap.addEventListener('pointermove', (e) => {
+        if (performance.now() < frozenUntil) return;
+        e.preventDefault();
+        setPaddleFromClientX(e.clientX);
+      });
+      gameWrap.addEventListener('pointerdown', (e) => {
+        gameWrap.setPointerCapture(e.pointerId);
+        if (performance.now() < frozenUntil) return;
+        setPaddleFromClientX(e.clientX);
+      });
+
+      function startGame() {
+        startScreen.classList.add('hidden');
+        endScreen.classList.add('hidden');
+        gameScreen.classList.remove('hidden');
+        remaining = deficit;
+        gameTimer = 45;
+        caught = [];
+        ended = false;
+        lastTs = 0;
+        spawnAcc = 0;
+        frozenUntil = 0;
+        syncHud();
+        layoutPaddle();
+        requestAnimationFrame(() => {
+          lastTs = 0;
+          raf = requestAnimationFrame(loop);
+        });
+      }
+
+      startBtn.addEventListener('click', startGame);
+      document.getElementById('restartBtn').addEventListener('click', startGame);
+
+      window.addEventListener('resize', layoutPaddle);
+    })();
+  </script>
+</body>
+</html>
