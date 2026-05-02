@@ -492,14 +492,14 @@
               direction: 'up',
               delay: 0,
               duration: 2,
-              separator: ' ',
+              separator: '\u00a0',
               prefix: '',
-              suffix: ' ₽',
+              suffix: '\u00a0₽',
               className: 'count-up-text',
               startWhen: false,
             });
           } else {
-            defSpan.textContent = deficit.toLocaleString('ru-RU') + ' ₽';
+            defSpan.textContent = deficit.toLocaleString('ru-RU') + '\u00a0₽';
           }
           const barWrap = document.createElement('span');
           barWrap.className = 'coverage-bar-wrap';
@@ -510,7 +510,7 @@
           deficitOut.appendChild(barWrap);
           const coverLabel = document.createElement('span');
           coverLabel.className = 'coverage-label';
-          coverLabel.textContent = 'потенциал закрывает ' + coverage + '% стоимости поездки';
+          coverLabel.textContent = 'потенциал закрывает ' + coverage + '%\u00a0стоимости поездки';
           deficitOut.appendChild(coverLabel);
           setTimeout(() => { barFill.style.width = coverage + '%'; }, 80);
 
