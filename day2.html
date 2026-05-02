@@ -501,14 +501,15 @@
           } else {
             defSpan.textContent = deficit.toLocaleString('ru-RU') + '\u00a0₽';
           }
-          const barWrap = document.createElement('span');
+          deficitOut.appendChild(document.createElement('br'));
+          const barWrap = document.createElement('div');
           barWrap.className = 'coverage-bar-wrap';
-          const barFill = document.createElement('span');
+          const barFill = document.createElement('div');
           barFill.className = 'coverage-bar-fill';
           barFill.style.width = '0%';
           barWrap.appendChild(barFill);
           deficitOut.appendChild(barWrap);
-          const coverLabel = document.createElement('span');
+          const coverLabel = document.createElement('div');
           coverLabel.className = 'coverage-label';
           coverLabel.textContent = 'потенциал закрывает ' + coverage + '%\u00a0стоимости поездки';
           deficitOut.appendChild(coverLabel);
