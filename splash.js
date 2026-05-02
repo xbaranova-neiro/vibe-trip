@@ -35,8 +35,8 @@
         </svg>
       </div>
       <div style="font-size:3.5rem;animation:splashSunrise 1.2s ease both;">🌅</div>
-      <div style="font-size:clamp(1.3rem,5vw,1.8rem);font-weight:800;letter-spacing:-0.04em;margin-top:0.5rem;animation:splashFadeUp 0.7s ease 0.3s both;">Куда тебя несёт?</div>
-      <div style="font-size:0.95rem;font-weight:600;opacity:0.7;margin-top:0.3rem;animation:splashFadeUp 0.6s ease 0.55s both;">День 1 · Собери поездку мечты</div>
+      <div style="font-size:clamp(1.3rem,5vw,1.8rem);font-weight:800;letter-spacing:-0.04em;margin-top:0.5rem;animation:splashFadeUp 0.7s ease 0.3s both;">Сколько стоит твоя мечта?</div>
+      <div style="font-size:0.95rem;font-weight:600;opacity:0.7;margin-top:0.3rem;animation:splashFadeUp 0.6s ease 0.55s both;">5 вопросов — и узнаешь 🌴</div>
       <div style="font-size:1.6rem;position:absolute;top:18%;right:12%;animation:splashPlane 2s ease-in-out both;">✈️</div>
     `;
   } else if (day === '2') {
