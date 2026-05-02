@@ -195,16 +195,12 @@
       <div class="progress" aria-hidden="true">
         <span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
       </div>
-      <p class="step-title">Шаг 1. Поездка</p>
-      <label class="lbl" for="codeInput">Код из дня 1</label>
-      <input type="text" id="codeInput" placeholder="например TH-5star-AI-1line-e2" autocomplete="off" />
-      <p class="muted">Вставь код — подтянем сумму поездки автоматически.</p>
-      <button type="button" class="link-shame" id="shameBtn">Я не сохранил, позор мне</button>
+      <p class="step-title">Шаг 1. Твоя поездка</p>
+      <p class="muted" id="tripHint" style="margin-top:0;"></p>
       <div id="manualBox" class="hidden" style="margin-top: 1rem;">
         <label class="lbl" for="manualSum">Сумма поездки в ₽ (на двоих)</label>
         <input type="number" id="manualSum" min="0" step="1000" placeholder="180000" />
       </div>
-      <p class="muted" id="tripHint" style="margin-top:10px;"></p>
       <div class="nav-row">
         <span></span>
         <button type="button" class="btn btn-primary" id="s1next">Дальше</button>
@@ -301,27 +297,22 @@
         }
       }
 
-      function hasTripFromUrl(params) {
+      function getSumFromUrl(params) {
         const sumStr = params.get('sum');
         let sum = sumStr != null && sumStr !== '' ? Number(sumStr) : NaN;
-        if (!Number.isFinite(sum) || sum <= 0) sum = NaN;
-        const code = (params.get('code') || '').trim();
-        if (!Number.isFinite(sum) && code) {
-          const pr = P.tripPriceFromCode(code);
-          if (Number.isFinite(pr)) sum = pr;
-        }
-        return Number.isFinite(sum) && sum > 0;
+        if (!Number.isFinite(sum) || sum <= 0) return NaN;
+        return sum;
       }
 
       const params = new URLSearchParams(window.location.search);
-      const fromUrl = hasTripFromUrl(params);
+      const sumFromUrl = getSumFromUrl(params);
       const fromLs = !!readDay1Ls();
 
       if (!preview && cal < 2) {
         document.getElementById('gateCalendar').classList.remove('hidden');
         return;
       }
-      if (!fromUrl && !fromLs && !preview) {
+      if (!Number.isFinite(sumFromUrl) && !fromLs && !preview) {
         document.getElementById('gateDay1').classList.remove('hidden');
         return;
       }
@@ -329,13 +320,10 @@
       document.getElementById('appRoot').classList.remove('hidden');
 
       let tripSum = NaN;
-      const initialCode = params.get('code') || '';
 
-      const codeInput = document.getElementById('codeInput');
       const manualBox = document.getElementById('manualBox');
       const manualSum = document.getElementById('manualSum');
       const tripHint = document.getElementById('tripHint');
-      const shameBtn = document.getElementById('shameBtn');
       const incomeRange = document.getElementById('incomeRange');
       const incomeHint = document.getElementById('incomeHint');
       const incomeValue = document.getElementById('incomeValue');
@@ -343,58 +331,27 @@
       const day3Link = document.getElementById('day3Link');
       const shareBtn = document.getElementById('shareBtn');
 
-      const sumStr = params.get('sum');
-      if (sumStr != null && sumStr !== '') {
-        const n = Number(sumStr);
-        if (Number.isFinite(n) && n > 0) tripSum = n;
-      }
-      if (initialCode) codeInput.value = initialCode;
-      if (!Number.isFinite(tripSum) && initialCode) {
-        const p = P.tripPriceFromCode(initialCode);
-        if (Number.isFinite(p)) tripSum = p;
+      if (Number.isFinite(sumFromUrl)) {
+        tripSum = sumFromUrl;
       }
       if (!Number.isFinite(tripSum)) {
         const ls = readDay1Ls();
-        if (ls) {
-          tripSum = ls.sum;
-          if (!codeInput.value.trim() && ls.code) codeInput.value = ls.code;
-        }
+        if (ls) tripSum = ls.sum;
       }
-
       if (preview && !Number.isFinite(tripSum)) {
         tripSum = 218000;
-        if (!codeInput.value.trim()) codeInput.value = 'TH-3star-cafe-5min-e2';
       }
 
-      function updateTripFromCode() {
-        const code = codeInput.value.trim();
-        const parsed = P.parseTripCode(code);
-        if (parsed) {
-          tripSum = P.calcTripPrice(parsed);
-          tripHint.textContent = 'Поездка: ~' + tripSum.toLocaleString('ru-RU') + ' ₽';
-          manualBox.classList.add('hidden');
-          return true;
-        }
-        if (manualBox.classList.contains('hidden')) {
-          tripHint.textContent = 'Не узнали код — проверь или введи сумму вручную.';
-        }
-        return false;
-      }
-
-      codeInput.addEventListener('input', updateTripFromCode);
-      if (initialCode || codeInput.value.trim()) updateTripFromCode();
-      else if (Number.isFinite(tripSum)) {
-        tripHint.textContent = 'Поездка: ~' + tripSum.toLocaleString('ru-RU') + ' ₽';
-      }
-
-      shameBtn.addEventListener('click', () => {
+      if (Number.isFinite(tripSum) && tripSum > 0) {
+        tripHint.textContent = 'Твоя поездка: ~' + tripSum.toLocaleString('ru-RU') + ' ₽. Посмотрим, хватит ли 👀';
+      } else {
         manualBox.classList.remove('hidden');
-        tripHint.textContent = 'Окей, никто не узнает. Только честная сумма.';
-      });
+        tripHint.textContent = 'Введи стоимость поездки из первого дня:';
+      }
 
       manualSum.addEventListener('input', () => {
         const v = parseInt(manualSum.value, 10);
-        if (Number.isFinite(v)) {
+        if (Number.isFinite(v) && v > 0) {
           tripSum = v;
           tripHint.textContent = 'Поездка: ~' + tripSum.toLocaleString('ru-RU') + ' ₽';
         }
@@ -405,9 +362,6 @@
           const v = parseInt(manualSum.value, 10);
           if (Number.isFinite(v) && v > 0) return v;
         }
-        const code = codeInput.value.trim();
-        const parsed = P.parseTripCode(code);
-        if (parsed) return P.calcTripPrice(parsed);
         const ls = readDay1Ls();
         if (ls && Number.isFinite(ls.sum) && ls.sum > 0) return ls.sum;
         const sumStr2 = new URLSearchParams(window.location.search).get('sum');
@@ -415,7 +369,7 @@
           const n = Number(sumStr2);
           if (Number.isFinite(n) && n > 0) return n;
         }
-        return NaN;
+        return tripSum;
       }
 
       function show(el, on) {
@@ -450,13 +404,11 @@
       document.getElementById('s1next').addEventListener('click', () => {
         if (!manualBox.classList.contains('hidden')) {
           const v = parseInt(manualSum.value, 10);
-          if (Number.isFinite(v)) tripSum = v;
-        } else {
-          updateTripFromCode();
+          if (Number.isFinite(v) && v > 0) tripSum = v;
         }
         tripSum = resolveTripSum();
         if (!Number.isFinite(tripSum) || tripSum <= 0) {
-          tripHint.textContent = 'Нужен рабочий код или сумма поездки 🙂';
+          tripHint.textContent = 'Нужна сумма поездки, чтобы посчитать 🙂';
           return;
         }
         show('step1', false);
@@ -502,15 +454,11 @@
         return Math.round(savedCore + sideTotal + resTotal);
       }
 
-      if (Number.isFinite(tripSum) && tripSum > 0 && fromUrl) {
+      if (Number.isFinite(tripSum) && tripSum > 0 && Number.isFinite(sumFromUrl)) {
         try {
           localStorage.setItem(
             SK.day1,
-            JSON.stringify({
-              code: codeInput.value.trim() || (params.get('code') || ''),
-              sum: tripSum,
-              at: Date.now(),
-            })
+            JSON.stringify({ sum: tripSum, at: Date.now() })
           );
         } catch (_) {}
       }
@@ -518,7 +466,7 @@
       document.getElementById('calcBtn').addEventListener('click', () => {
         tripSum = resolveTripSum();
         if (!Number.isFinite(tripSum) || tripSum <= 0) {
-          tripHint.textContent = 'Пропала сумма поездки — вернись на шаг 1 и проверь код или сумму.';
+          tripHint.textContent = 'Пропала сумма поездки — вернись на шаг 1.';
           show('step4', false);
           show('step1', true);
           return;
@@ -569,8 +517,6 @@
           const url = new URL('day3.html', window.location.href);
           url.searchParams.set('deficit', String(deficit));
           url.searchParams.set('sum', String(tripSum));
-          const code = codeInput.value.trim();
-          if (P.parseTripCode(code)) url.searchParams.set('code', code);
           if (P.isPreviewUnlock(window.location.search)) url.searchParams.set('preview', '1');
           day3Link.href = url.toString();
 
@@ -583,7 +529,6 @@
                 deficit: deficit,
                 tripSum: tripSum,
                 potential: potential,
-                code: code,
                 at: Date.now(),
               })
             );

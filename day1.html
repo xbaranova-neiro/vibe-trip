@@ -64,6 +64,14 @@
       background: var(--accent);
       transform: scale(1.15);
     }
+    .step-counter {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 0.25rem;
+      letter-spacing: 0.04em;
+    }
     .step-title {
       font-size: 1.05rem;
       font-weight: 800;
@@ -223,12 +231,14 @@
 
   <div id="appRoot" class="wrap">
     <header>
-      <h1>Куда тебя несёт?</h1>
-      <p>День 1 · Собери поездку мечты</p>
+      <h1>Считаем, сколько стоит твоя мечта 🌴</h1>
+      <p>Выбери поездку — узнаешь цену. И кое-что ещё 👀</p>
     </header>
+    <p class="hint" style="text-align:center;margin:-0.25rem 0 1.25rem;font-size:0.92rem;">5 вопросов → стоимость твоей мечты → и секрет, как её оплатить 😏</p>
 
     <section id="flow">
       <div class="progress" id="dots" aria-hidden="true"></div>
+      <p class="step-counter" id="stepCounter"></p>
       <p class="step-title" id="stepTitle"></p>
       <div class="grid" id="grid"></div>
       <div class="nav-row">
@@ -239,17 +249,15 @@
 
     <section id="resultScreen" class="hidden">
       <div class="result">
-        <p class="result-kicker">Маршрут собран</p>
+        <p class="result-kicker">Маршрут собран 🎉</p>
         <div class="price-box">
           <p class="result-label">Твоя поездка мечты стоит</p>
           <p class="price-num" id="priceOut">~0 ₽</p>
-          <p class="result-note">на двоих</p>
+          <p class="result-note" id="priceJoke"></p>
         </div>
-        <p class="hint">Твой уникальный код поездки:</p>
-        <div class="code-box" id="codeOut"></div>
-        <button type="button" class="btn btn-primary btn-block" id="copyBtn">Скопировать код</button>
-        <p class="hint pulse">Запомни этот код — завтра он тебе пригодится 😏</p>
-        <a class="btn btn-primary btn-block" id="day2Link" href="#">День 2: А хватит ли денег?</a>
+        <p class="hint" style="margin-top:1.25rem;">Завтра посчитаем, хватит ли тебе — и что с этим делать.</p>
+        <p class="hint" style="font-weight:800;color:var(--text);">Узнаешь, как заработать на такую прекрасную поездку. Запомни стоимость — она ещё пригодится 😏</p>
+        <a class="btn btn-primary btn-block" id="day2Link" href="#">Жду день 2 →</a>
       </div>
     </section>
   </div>
@@ -275,7 +283,7 @@
 
       const steps = [
         {
-          title: 'Шаг 1. Страна',
+          title: 'Куда рвётся душа?',
           key: 'country',
           gridClass: 'cols-2',
           options: [
@@ -292,7 +300,7 @@
           })),
         },
         {
-          title: 'Шаг 2. Уровень отеля',
+          title: 'Где будешь спать?',
           key: 'hotel',
           gridClass: 'cols-2',
           options: [
@@ -303,7 +311,7 @@
           ],
         },
         {
-          title: 'Шаг 3. Питание',
+          title: 'Как питаться?',
           key: 'food',
           gridClass: '',
           options: [
@@ -314,7 +322,7 @@
           ],
         },
         {
-          title: 'Шаг 4. Линия от моря',
+          title: 'Насколько близко к морю?',
           key: 'sea',
           gridClass: '',
           options: [
@@ -324,7 +332,7 @@
           ],
         },
         {
-          title: 'Шаг 5. Экскурсии',
+          title: 'Ты турист или овощ?',
           key: 'exc',
           gridClass: '',
           options: [
@@ -340,6 +348,7 @@
       let autoAdvanceTimer;
 
       const dotsEl = document.getElementById('dots');
+      const stepCounterEl = document.getElementById('stepCounter');
       const stepTitleEl = document.getElementById('stepTitle');
       const gridEl = document.getElementById('grid');
       const nextBtn = document.getElementById('nextBtn');
@@ -347,8 +356,7 @@
       const flowEl = document.getElementById('flow');
       const resultEl = document.getElementById('resultScreen');
       const priceOut = document.getElementById('priceOut');
-      const codeOut = document.getElementById('codeOut');
-      const copyBtn = document.getElementById('copyBtn');
+      const priceJoke = document.getElementById('priceJoke');
       const day2Link = document.getElementById('day2Link');
 
       function renderDots() {
@@ -363,6 +371,7 @@
       function renderStep() {
         clearTimeout(autoAdvanceTimer);
         const s = steps[stepIndex];
+        stepCounterEl.textContent = 'Шаг ' + (stepIndex + 1) + ' из ' + steps.length;
         stepTitleEl.textContent = s.title;
         gridEl.className = 'grid ' + (s.gridClass || '');
         gridEl.innerHTML = '';
@@ -400,6 +409,24 @@
         renderDots();
       }
 
+      function getJoke(parts, sum) {
+        if (parts.hotel === '5star' && parts.food === 'AI' && parts.sea === '1line')
+          return 'Вкусы королевские. Кошелёк пока не знает 👑';
+        if (parts.hotel === 'hostel' && parts.food === 'noodle')
+          return 'Бюджетный боец! Но даже это стоит денег 😄';
+        if (parts.hotel === 'hostel')
+          return 'Минимализм — тоже стиль 🎒';
+        if (parts.exc === 'e5')
+          return 'Всё увидеть, всё попробовать! Уважаю 🤘';
+        if (parts.country === 'AE')
+          return 'Дубай — город, где даже воздух стоит денег 💎';
+        if (sum > 250000)
+          return 'Масштаб впечатляет. Осталось понять, откуда это взять 😅';
+        if (sum < 100000)
+          return 'Скромно, но со вкусом! Это реально 💪';
+        return 'Хорошая поездка. Завтра разберёмся, как её оплатить 🙌';
+      }
+
       function finish() {
         const parts = {
           country: choices.country,
@@ -408,9 +435,10 @@
           sea: choices.sea,
           exc: choices.exc,
         };
-        const code = P.encodeTripCode(parts);
         const sum = P.calcTripPrice(parts);
-        codeOut.textContent = code;
+
+        priceJoke.textContent = getJoke(parts, sum);
+
         if (window.vibeCountUp) {
           window.vibeCountUp(priceOut, {
             from: 0,
@@ -429,7 +457,6 @@
         }
 
         const url = new URL('day2.html', window.location.href);
-        url.searchParams.set('code', code);
         url.searchParams.set('sum', String(sum));
         if (P.isPreviewUnlock(window.location.search)) url.searchParams.set('preview', '1');
         day2Link.href = url.toString();
@@ -437,7 +464,7 @@
         try {
           localStorage.setItem(
             P.STORAGE_KEYS.day1,
-            JSON.stringify({ code: code, sum: sum, at: Date.now() })
+            JSON.stringify({ sum: sum, at: Date.now() })
           );
         } catch (_) {}
 
@@ -461,17 +488,6 @@
         if (stepIndex > 0) {
           stepIndex--;
           renderStep();
-        }
-      });
-
-      copyBtn.addEventListener('click', async () => {
-        const t = codeOut.textContent;
-        try {
-          await navigator.clipboard.writeText(t);
-          copyBtn.textContent = '✓ Скопировано!';
-          setTimeout(() => (copyBtn.textContent = 'Скопировать код'), 2000);
-        } catch {
-          copyBtn.textContent = 'Выдели код вручную 🙂';
         }
       });
 
